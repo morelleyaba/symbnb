@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{# flitre #}
+{% block title %}Bienvenue sur le meuilleur reseau d'appartements{% endblock %} 
+{# Indique le chemin comme href en html #}
+{% block body %}
+{# <h1><em>{{title | upper}}</em></h1>
+<a href="{{ path('hello',{'prenom':'Lior','age':'22'}) }}">Allez voir Hello</a>
+
+<p>voici presentée ma premiere page symfony</p>
+
+{% if age <= 18 %}
+<p>Vous etes encore jeune </p>
+{% else %}
+<p>Vous etes un adult</p>
+{% endif %} #}
+
+<div class="container">
+<div class="jumbotron mt-3">
+  <h1 class="display-4">Bienvenu sur SymBNB!</h1>
+  <p class="lead">Nous mettons en relation les proprietaires et les voyageurs qui desirent profiter
+  profiter d'opportunités et gagner de l'argent en proposant leur bien a la location</p>
+  <hr class="my-4">
+  <p>Vous etes voyageur? et vous voulez voir ou vous pourrez 
+  loger pour votre prochain deplacement?</p>
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="#" role="button">Voir nos annonces</a>
+  </p>
+</div>
+<div>
+<h2 class="h1 mt-3 mb-4">Nos appartements Starts</h2>
+<div class="row">
+        <div class="col-md-4">
+            <div class="card bg-light mb-3">
+                <div class="card-hearder text-center">
+                3 chambres, <strong>49&euro; / nuit </strong><br>
+                <small>pas encore noté</small>
+                </div>
+                <img src="https://placehold.it/1000*400" alt="" style="height:200px; width:100%; display:block">
+
+                    <div class="card-body">
+                        <h4 class="card-title">appartement de Ouf ! </h4>
+                        <p class="card-text">Quelques exemples de texte rapides pour s'appuyer 
+                        sur le titre de la carte 
+                        et constituer l'essentiel du contenu de la carte.
+                        </p>
+                        <a class="btn btn-secondary btn-lg" href="#" role="button">En savoir plus</a>
+                      </div>
+
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-light mb-3">
+                <div class="card-hearder text-center">
+                3 chambres, <strong>49&euro; / nuit </strong><br>
+                <small>pas encore noté</small>
+                </div>
+                <img src="https://placehold.it/1000*400" alt="" style="height:200px; width:100%; display:block">
+
+                    <div class="card-body">
+                        <h4 class="card-title">appartement de Ouf ! </h4>
+                        <p class="card-text">Quelques exemples de texte rapides pour s'appuyer 
+                        sur le titre de la carte 
+                        et constituer l'essentiel du contenu de la carte.
+                        </p>
+                        <a class="btn btn-secondary btn-lg" href="#" role="button">En savoir plus</a>
+                      </div>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-light mb-3">
+                <div class="card-hearder text-center">
+                3 chambres, <strong>49&euro; / nuit </strong><br>
+                <small>pas encore noté</small>
+                </div>
+                <img src="https://placehold.it/1000*400" alt="" style="height:200px; width:100%; display:block">
+
+                    <div class="card-body">
+                        <h4 class="card-title">appartement de Ouf ! </h4>
+                        <p class="card-text">Quelques exemples de texte rapides pour s'appuyer 
+                        sur le titre de la carte 
+                        et constituer l'essentiel du contenu de la carte.
+                        </p>
+                        <a class="btn btn-secondary btn-lg" href="#" role="button">En savoir plus</a>
+                      </div>
+
+            </div>
+        </div>
+
+
+
+</div>
+<h2 class="h1 mt-3 mb-4">Nos proprietaires Starts</h2>
+<div class="row">
+        <div class="col">
+          <div class="card border-secondary mb-3" style="">
+            <div class="card-body">
+                <h4 class="card-title">Morelle Yepie</h4>
+                <hr>
+                    <div class="card-text">
+                
+                      <img src="https://placehold.it/64*64" alt="" style=""  class="float-left mr-3">
+                      <p>Quelques exemples de texte rapides pour s'appuyer 
+                        sur le titre de la carte 
+                        et constituer l'essentiel du contenu de la carte.
+                        </p>
+                        <a  href="#" class="btn btn-success float-right">En savoir plus</a>
+                    </div>
+               
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card border-secondary mb-3" style="">
+            <div class="card-body">
+                <h4 class="card-title">Morelle Yepie</h4>
+                <hr>
+                    <div class="card-text">
+                
+                      <img src="https://placehold.it/64*64" alt="" style=""  class="float-left mr-3">
+                      <p>Quelques exemples de texte rapides pour s'appuyer 
+                        sur le titre de la carte 
+                        et constituer l'essentiel du contenu de la carte.
+                        </p>
+                        <a  href="#" class="btn btn-success float-right">En savoir plus</a>
+                    </div>
+               
+            </div>
+          </div>
+        </div>
+  </div>
+{% endblock %}

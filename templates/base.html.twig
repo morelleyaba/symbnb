@@ -4,43 +4,43 @@
         <meta charset="UTF-8">
 <meta name"viewport" content="width=devise-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
         <title>SymBNB - {% block title %}Welcome!{% endblock %}</title>
        
         {% block stylesheets %} {% endblock %}
 
-<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/app.css">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{{ path('homepage') }}">SymBNB !</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <div class="collapse navbar-collapse" id="navbarColor03">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="{{ path('homepage') }}">Acceuil
-          </a>
-        </li>
-      </ul>
-     <ul class="navbar-nav ml-auto">
-     <li class="nav-item">
-          <a class="nav-link" href="#">Mon compte
-          </a>
-      </ul>
-    </div>
-  </div>
-</nav>
+{# pour inclure un fichier de l'entete #}
+{% include 'partials/header.html.twig' %}
 
-{% block header %} <p>Vous etes sur ma page officiel</p>{% endblock %}
+
+{% block header %} {% endblock %}
         {% block body %}{% endblock %}
-        <script src="js/jquery.min.js"></script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
         {% block javascripts %} {% endblock %}
     </body>
+    
+  {# pour inclure un fichier du pieds de page #}      
+{% include 'partials/footer.html.twig' %}
 </html>
 
 

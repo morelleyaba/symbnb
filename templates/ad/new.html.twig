@@ -1,0 +1,135 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Creation d'une Annonce
+{% endblock %}
+
+{# definir un theme de formulaire #}
+{# {% form_theme formulaire _self %}  #}
+
+{% form_theme formulaire _self %}
+
+{% block body %}
+{# definir un theme de formulaire  Ex: Ligne 7-8 Et 38-44 #}
+{# <div class="container">
+    <h1>Creer une nouvelle Annonce</h1>
+    {{form_start(formulaire)}}
+    <div class="form-group">
+        {{ form_label(formulaire.title) }}
+        {{ form_widget(form.title,
+        {'attr': {'class':'form-control', 'placeholder':'Titre de l\'annonce'}} ) }}
+        <div>
+        <button type="submit" class="btn btn-primary">Creer la nouvelle annonce </button>
+    {{ form_end(formulaire)}}
+<div> #}
+
+<div class="container">
+    <h1>Creer une nouvelle Annonce</h1>
+
+    {{form_start(formulaire)}}
+
+    {{ form_widget(formulaire) }}
+
+         <button type="submit" class="btn btn-primary mt-4">Creer la nouvelle annonce </button>
+
+    {{ form_end(formulaire)}}
+
+<div>
+{% endblock %}
+
+{% block _ad_images_widget %}
+    
+    <p> Ajouter des images </p>
+        {{ form_widget(form) }}
+
+<input type="hidden" id="widgets-counter" value="0">
+
+        <div class="form-group">
+<button type="button" id="add-image" class='btn btn-primary mt-4'>
+Ajouter une image </button>
+</div>
+{% endblock %}
+
+{% block _ad_images_entry_row %}
+{{ form_widget(form) }}
+{% endblock %}
+
+{# a chaque fois qu'on tombe sur la div de l'image, symfony va appeler ce theme defini uniquement pour
+ champ image de l'entity image ajouter dans le fichier AdType.php #}
+{% block _ad_images_entry_widget %}
+        <div class="form-group" id="block_{{id}}">
+            <div class="row">
+                <div class="col-10">
+                        <div class="row">
+                                <div class="col">
+                                    {{ form_widget(form.url) }}
+                                </div>
+                                <div class="col">
+                                    {{ form_widget(form.caption) }}
+                                </div>
+                        </div>
+                </div>
+
+                <div class="col-2">
+                        <button type="button" class="btn btn-danger"
+                         data-action="delete" data-target="#block_{{id}} ">
+                         X
+                         </button>
+                </div>
+            </div>
+            
+        </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+        $('#add-image').click(function(){
+            //je recupere le numero des futures champs que je vais creer
+        //const index=$('#ad_images div.form-group').length;
+
+       //Supprimer le bugg , quand on supprime un block de champ le numero de block ne se met pas a jour VIDEO-Symfony4- 6-6/commente ligne88
+             const index= +$('#widgets-counter').val();
+                //console.log(index);
+
+        //je recupere le prototype des entrée
+        const tmpl=$('#ad_images').data('prototype').replace(/_name_/g, index);
+
+        //j'injecte ce code au sein de la div 
+        $('#ad_images').append(tmpl);
+        //console.log(tmpl);
+
+         $('#widgets-counter').val(index + 1);
+
+        //je gere le boutton supprimer
+        handleDelecteButtons();
+        } );
+
+        function handleDelecteButtons(){
+            //xa va nous donner tous les bouttons qui ont un attribut (data-action = delete)
+            $('button[data-action="delete"]').click(function(){
+                // this qui est lié a un évenement fait reference a l'element qui a declenché l'evenement 
+                // dans notre cas (le boutton sur lequel on a clicker)
+                // dataset fait reference a tous ses attributs (data-quelqueChose) 
+                //et ensuite (.target) parceque on veux acceder a l'attribut (data-target Ligne 72)
+                const target=this.dataset.target;
+                //Quand on click sur le boutton qu'il nous suprime la div dont l'id = (block_id)
+                $(target).remove();
+                //console.log(target);
+
+            });
+        }
+        handleDelecteButtons();
+
+</script>
+{% endblock %}
+
+
+
+
+{# {% block form_row %}
+    <div class="form-group">
+    <h3> un test </h3>
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+    <div>
+{% endblock %} #}

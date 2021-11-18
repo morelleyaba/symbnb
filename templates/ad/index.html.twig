@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdController!{% endblock %}
+{% block title %}Nos magnifiques annonces{% endblock %}
 
 {% block body %}
 <style>
@@ -8,13 +8,36 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div class="container">
+    <h1 class="my-3">Voici les annonces de nos hotes</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/YEPIE/Desktop/formation-perso/udemy/src/Controller/AdController.php'|file_link(0) }}">src/Controller/AdController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/YEPIE/Desktop/formation-perso/udemy/templates/ad/index.html.twig'|file_link(0) }}">templates/ad/index.html.twig</a></code></li>
-    </ul>
+    <div class="row">
+    {% for ad in ads %}
+    
+    {# declarer une variable 'url' qui va contenir le chemin pour ne pas a avoir reecrire tout le chemin entier plusieur fois #}
+    {% set url = path('ads_show',{'slug':ad.slug}) %}
+<div class="col-md-4">
+            <div class="card bg-light mb-3">
+                <div class="card-hearder text-center">
+                {{ad.rooms}}, <strong>{{ad.price}}&euro; / nuit </strong><br>
+                <small>pas encore noté</small>
+                </div>
+                {# envoyer le slug en paramettre de l'url (voir adController.php @ROUTE L-27) #}
+                <a href="{{ url }}">
+                <img src="{{ad.coverImage}}" alt="" style="height:200px; width:100%; display:block">
+                </a>
+                    <div class="card-body">
+                        <h4 class="card-title"> <a href="{{ url }}">
+                        {{ad.title}} 
+                        </a></h4>
+                        <p class="card-text">{{ad.content}}
+                        </p>
+                        <a class="btn btn-secondary btn-lg" href="{{ url }}" role="button">En savoir plus</a>
+                      </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

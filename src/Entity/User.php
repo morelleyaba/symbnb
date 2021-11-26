@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * Anntation pour gerer le cycle de vie
+ * Annotation pour gerer le cycle de vie
  * @ORM\HasLifecycleCallbacks
  * 
  * Ajouter les contraintes,on veux que "les users soit unique" avec la fonction "UniqueEntity" qui prend en parametre (les "field surlesquels on veux faire en sorte que xa soit unique )

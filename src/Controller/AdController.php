@@ -72,7 +72,9 @@ class AdController extends AbstractController
                         "L'annonce <strong>{$ad->getTitle()}</strong> !a bien été enregistrer"
                     );
                     
-            return $this->redirectToRoute('ads_show',['slug'=>$ad->getSlug()]);
+            return $this->redirectToRoute('ads_show',
+            ['slug'=>$ad->getSlug()
+        ]);
         }
         return $this->render('ad/new.html.twig',[
             'formulaire'=>$form->createView()
@@ -137,7 +139,9 @@ class AdController extends AbstractController
                     "success",
                     "L'annonce <strong>{$ad->getTitle()}</strong> ! a bien été modifié"
                 );
-                return $this->redirectToroute('ads_show');
+                return $this->redirectToroute('ads_show',
+                ['slug'=>$ad->getSlug()
+             ]);
         }
 
         return $this->render('ad/edit.html.twig',[

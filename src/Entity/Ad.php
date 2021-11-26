@@ -9,17 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 //Validation de champs
 use Symfony\Component\Validator\Constraints as Assert;
 //Validation de l'entity elle meme
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+// use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
  * @ORM\Entity(repositoryClass=AdRepository::class)
  * Anntation pour gerer le cycle de vie
  * @ORM\HasLifecycleCallbacks
- * le title et le slug doivent etre unique
- * @UniqueEntity(
- * fields={"title","slug"}
- * )
  */
 class Ad
 {
@@ -32,8 +28,6 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=255)
-     * validation de champs "title" /contrainte sur sa longueur min & max 
-     * @Assert\Length(min=10,max=225, minMessage=" L' introduction doit faire plus de 10 caracteres", maxMessage="Le Titre ne peux pas faire plus se 225 Carractere")
      */
     private $title;
 
@@ -55,14 +49,11 @@ class Ad
 
     /**
      * @ORM\Column(type="text")
-     * validation de champs "introduction" /contrainte sur sa longueur min & max avec le message d'erreure
-     * @Assert\Length(min=10, minMessage="Votre description ne peut pas faire moins de 100 caracteres")
      */
     private $content;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Url() 
      */
     private $coverImage;
 

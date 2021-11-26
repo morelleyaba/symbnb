@@ -1,15 +1,32 @@
 security:
+
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    #les providers permetent de dire a symfony d'ou viennent les données des utilisateurs
+    #creons un nouveaux provider qui a permettre de recuperer les donnée des utilisateurs a partir des données des utilisateurs
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: lazy
-            provider: users_in_memory
-
+            anonymous: true
+            guard:
+                authenticators:
+                    - App\Security\LoginAuthenticator
+            logout:
+                path: app_logout
+                # Ou se rediriger apres s'etre deconnecté
+                target: app_login
+         
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 

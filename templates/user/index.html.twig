@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page de {{user.fullName}} {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-md-3 text-center">
+        {# Afficher l'image de l'utilisateur #}
+            <img src="{{user.picture}}" class="avatar mb-3" alt="Avatar de {{user.fullName}}" style="max-width:  64 px;max-height: 64 px; border-radius: 50%;">
+            <br>
+            {# Afficher le nombre d'annonces que l'utilisateur possede #}
+            <spam class="badge badge-primary bg-primary">{{user.ads| length}} Annonces</spam>
+        </div>
+            <div class="col-md-9">
+            <h1>{{user.fullName}}</h1>
+            {# cette variable "user" ici est celui qui est passé par le controller (dans userController il y'a deux fonction differentes qui font passer la variable "user" a "user/index.html.twig"),
+             donc xa ceux "user" peux etre l'utilisateur qui est connecté / comme un autre utilisateur dont on est entrain de regarder le profil #}
+
+            {# si l'utilisateur dont on regarde le profil est le meme que l'utilisateur qui est connecté #}
+            {% if user is same as (app.user) %}
+                <div class="mt-3">
+                <a href="{{path("account_profile")}} " class="btn btn-primary mr-2 mb-2">Modifier mes informations</a>
+                <a href="{{path("account_password")}} " class="btn btn-primary mb-2">Modifier mon mot de pass</a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+    {{user.description | raw}}
+    <hr>
+    <h2>Les annonces de {{user.fullName}}</h2>
+    {# si le nombre d'annonce de l'utilisateur est superieur a zero #}
+    {% if user.ads| length > 0 %}
+         <div class="row">
+            {% for ad in user.ads %}
+            {# Afficher les annonces de l'utilisateur en question#}
+                {% include "ad/_ad.html.twig" %}
+            {% endfor %}
+         </div>
+         {# sinon,afficher un message d'alerte  #}
+    {% else %}
+            <div class="alert alert-warning">
+            <p>
+            <strong>{{user.fullName}}</strong> n'a pas encore d'annonces sur le site
+            </p>
+            </div>
+    {% endif %}
+</div>
+{% endblock %}

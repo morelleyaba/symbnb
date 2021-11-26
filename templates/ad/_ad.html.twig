@@ -1,0 +1,23 @@
+
+{# declarer une variable 'url' qui va contenir le chemin pour ne pas a avoir reecrire tout le chemin entier plusieur fois #}
+                    {% set url = path('ads_show',{'slug':ad.slug}) %}
+                    <div class="col-md-4">
+                    <div class="card bg-light mb-3">
+                        <div class="card-hearder text-center">
+                                {{ad.rooms}}, <strong>{{ad.price}}&euro; / nuit </strong><br>
+                                 <small>pas encore noté</small>
+                        </div>
+                                {# envoyer le slug en paramettre de l'url (voir adController.php @ROUTE L-27) #}
+                                <a href="{{ url }}">
+                                <img src="{{ad.coverImage}}" alt="" style="height:200px; width:100%; display:block">
+                                </a>
+                        <div class="card-body">
+                                 <h4 class="card-title"> 
+                                 <a href="{{ url }}" style="text-decoration: none;">
+                                 {{ad.title}}</a>
+                                 </h4>
+                                 <p class="card-text">{{ad.content| raw}}</p>
+                                 <a class="btn btn-secondary btn-lg" href="{{ url }}" role="button">En savoir plus</a>
+                        </div>
+                    </div>
+                    </div>

@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AdController extends AbstractController
 {
     /**
+     * Afficher les annonces venant de la table---------------------------------
      * @Route("/ads", name="ads_index")
      * injection de dependance
      */
@@ -40,34 +41,26 @@ class AdController extends AbstractController
 
         $ad = new Ad();
 
-        // un example par rapport au sous-formulairede type collection
-        // $image3 = new Image();
-        // $image3->setUrl('https://www.akamai.com/content/dam/site/im-demo/perceptual-standard.jpg?imbypass=true')
-        //       ->setCaption('Titre 3');
-
-        //       $image35 = new Image();
-        // $image35->setUrl('https://www.akamai.com/content/dam/site/im-demo/perceptual-standard.jpg?imbypass=true')
-        //       ->setCaption('Titre 35');
-
-
-        //       $ad->addImage($image3)
-        //          ->addImage($image35);
-
-
+         //Relier le formulaire issu de ["AdType"] a la class de l'entity (Ad)
         $form=$this->createForm(AdType::class, $ad);
         
         // analyser la requete du formulaire pour relier toutes les informations qui se retrouvent dans le formulaire dans notre variable annonce $ad
-        $form->handleRequest($request);
+        $form->handleRequest($request); 
 
         // verifier si le formulaire a été submit et est valide
         if ($form->isSubmitted() && $form->isValid()){
-           
+        
              $entityManager = $this->getDoctrine()->getManager(); 
-            //  [ObjectManager $entityManager en paramettre Ligne 38]
+            //  [ObjectManager $entityManager en paramettre Ligne 40]
+            // Gerons les images de collections
             foreach ($ad->getImages() as $image) {
                 $image->setAd($ad);
                 $entityManager->persist($image);
             }
+            
+
+            $ad->setAuthor($this->getUser());
+
             $entityManager->persist($ad);
             $entityManager->flush();
             // redirection vers une autre page
@@ -85,25 +78,10 @@ class AdController extends AbstractController
             'formulaire'=>$form->createView()
         ]);
         
-        // $form=$this->createFormBuilder($ad)
-        //             ->add('title')
-        //             ->add('introduction')
-        //             ->add('content')
-        //             ->add('rooms')
-        //             ->add('price')
-        //             ->add('coverImage')
-        //             // ajouter des proprietés avec le systeme de class (attr ->attribut) a notre boutton
-        //             ->add('save', SubmitType::class, 
-        //             ['label' => 'Créer la nouvelle annonce',
-        //             'attr'=>[
-        //                 'class'=>'btn btn-primary'
-        //             ]])
-        //             ->getForm();
-        
        
     }
 
-    //--------------------------------Afficher un article------------------------
+    //--------------------------------Afficher les infos d'un article accompagné de l'auteur------------------------
     /**
      * repository qui permet de selectionner les donnée au sein d'une table
      * permet d'afficher une seule annonce
@@ -130,16 +108,17 @@ class AdController extends AbstractController
     }
 
     //-------------------------------- Edition d'une annnonce ------------------------
-    // editer une annonce on peux utiliser le paraConverter comme utiliser le repository
+    // editer une annonce on peux utiliser le paraConverter comme utiliser le repository, dans notre cas on va utiliser le repository
     /**
      *  Afficher le formulaire d'edition
      * @Route("/ads/{slug}/edit", name="ads_edit")
      * @return Response
      */
-    public function edit($slug,AdRepository $adRepository,Request $request):Response
+    public function edit($slug, AdRepository $repo,Request $request):Response
     {
-        $ad=$adRepository->find($slug);
-
+        // $ad=$adRepository->find($slug);
+        $ad=$repo->findOneBySlug($slug); 
+         //Relier le formulaire issu de ["AdType"] a la class de l'entity (Ad)
         $edit_form= $this->createForm(AdType::class,$ad);
         $edit_form ->handleRequest($request);
 

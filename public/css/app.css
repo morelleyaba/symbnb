@@ -17,3 +17,15 @@ div.ad-title h1,div.ad-title p{
 div.carousel-caption{
     text-shadow:3px 3px 3px rgba(161, 115, 115, 0.5);
 }
+
+.avatar{
+    max-width:  128 px;
+    max-height: 128 px;
+    border-radius: 50%;
+}
+
+.avatar-medium{
+    max-width:  64 px;
+    max-height: 64 px;
+    border-radius: 50%;
+}

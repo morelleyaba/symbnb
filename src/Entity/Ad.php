@@ -14,7 +14,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=AdRepository::class)
+ * Anntation pour gerer le cycle de vie
  * @ORM\HasLifecycleCallbacks
+ * le title et le slug doivent etre unique
  * @UniqueEntity(
  * fields={"title","slug"}
  * )
@@ -30,7 +32,7 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=255)
-     * validation de champs
+     * validation de champs "title" /contrainte sur sa longueur min & max 
      * @Assert\Length(min=10,max=225, minMessage=" L' introduction doit faire plus de 10 caracteres", maxMessage="Le Titre ne peux pas faire plus se 225 Carractere")
      */
     private $title;
@@ -53,6 +55,7 @@ class Ad
 
     /**
      * @ORM\Column(type="text")
+     * validation de champs "introduction" /contrainte sur sa longueur min & max avec le message d'erreure
      * @Assert\Length(min=10, minMessage="Votre description ne peut pas faire moins de 100 caracteres")
      */
     private $content;
@@ -64,7 +67,7 @@ class Ad
     private $coverImage;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer") 
      */
     private $rooms;
 
@@ -72,6 +75,12 @@ class Ad
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="ad", orphanRemoval=true)
      */
     private $images;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ads")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
 
     public function __construct()
     {
@@ -95,7 +104,7 @@ class Ad
             $this->slug=$slugify->slugify($this->title);
         }
     }
-    // ____________________________________
+    // ________________________________________________
     
     public function getId(): ?int
     {
@@ -212,6 +221,18 @@ class Ad
                 $image->setAd(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

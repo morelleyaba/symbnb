@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Ad;
 use App\Form\ImageType;
+use App\Form\ApplicationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,26 +15,10 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class AdType extends AbstractType
+//au lieu de "( class_AdType_extends_AbstractType )" on peut l'extends de ("ApplicationType")pour beneficier de la fonction qui y est declarée (getConfiguration) vu que celui ci extends aussi de AbstracType 
+class AdType extends ApplicationType
 {
-   /**
-    * permet d'avoir la configuration de base d'un champ !
-    *
-    * @param string $label
-    * @param string $placeholder
-    * @return array $champ_requis
-    * @return array
-    */
-    // on cree une fonction pour faciliter la tache pour ne pas avoir a repeter le label et le placeholder pour chaque champ
-    //Supprimer le fait que le champ "slug" soit required en ajoutant un deuxieme paramettre
-    private function getConfiguration($label, $placeholder, $champ_requis=[]){
-        return array_merge([
-            'label'=>$label,
-            'attr'=>[
-                'placeholder'=>$placeholder
-            ]
-            ], $champ_requis);
-        }
+   
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

@@ -32,6 +32,7 @@
             {% endfor %}
         </ol>
         <div class="carousel-inner">
+         {# des annonces "ad" on veut acceder au champs appelé "images"[champs de ad] (type collection qui est lié a "[ad_id]"=>champs de image), de celui ci on veut egalement avoir acces au champs "url && caption"[table image] #}
         {% for image in ad.images %}
             <div class="carousel-item {% if loop.first %} active {% endif %}">
             <img src="{{image.url}}" class="d-block w-100" alt="...">
@@ -56,24 +57,36 @@
                 </div>
                 
                 <div class="col">
+                {# creer une variable [a] pour eviter les repetition de [ad.author] #}
+                {% set a = ad.author %}
+                {# declarer une variable 'url' qui va contenir le chemin pour ne pas a avoir reecrire tout le chemin entier plusieur fois #}
+                    {% set url = path('user_show',{'slug':a.slug}) %}
+
                          <div class="row mb-3 align-items">
                                  <div class="col-md">
-                                    <img src="https://placehold.it/64*64" alt="essai" style="">
-                                <div>
+                                 {# afficher l'auteur dans la page d'une annonce #}
+                                 {# des annonces "ad" on veut acceder au champs appelé "author"[ad] (author_id =>clé etrangere de "ad"); de celui ci on veut egalement avoir acces au champs ("picture" proprieté de user) #}
+                                    {# <img src="{{ad.author.picture}}" alt="Avatar de {{ad.author.firstname}} {{ad.author.lastname}}" style=""> #}
+                                    {# <img src="{{a.picture}}" alt="Avatar de {{a.firstname}} {{a.lastname}}" style=""> #}
+
+                                    {# creeons une fonction ["getFullName() dans l'entity user"] pour  simplifier l'ecriiture du [a.firstname && a.lastname] #}
+                                    <a href="{{url}}" style="text-decoration: none;">
+                                    <img src="{{a.picture}}" class="avatar avatar-medium" alt="Avatar de {{a.fullName}}" style="max-width:  64 px;max-height: 64 px; border-radius: 50%;">
+                                    </a>
+                                </div>
 
                                 <div class="col-md"> 
-                                    <h3>Joseph Dupond</h3>
-                                    <spam class="badge badge-primary bg-primary">3 Annonces</spam>
-                                <div> 
-                        <div> 
-                        <p class="mt-4">Placeat impedit quo pariatur incidunt inventore consequatur.
-                        Reprehenderit dolorem illo delectus deserunt dolores voluptas.
-                        Repudiandae molestiae eum dolor ipsam ut placeat accusamus.</p>
-                        <p>Placeat impedit quo pariatur incidunt inventore consequatur.
-                        Reprehenderit dolorem illo delectus deserunt dolores voluptas.
-                        Repudiandae molestiae eum dolor ipsam ut placeat accusamus.</p>
+                                    {# <h3>{{ad.author.firstname}} {{ad.author.lastname}}</h3> #}
+                                    {# <h3>{{a.firstname}} {{a.lastname}}</h3> #}
+                                    <a href="{{url}}" style="text-decoration: none;">
+                                    <h3>{{a.fullName}}</h3>
+                                    </a>
+                                    <spam class="badge badge-primary bg-primary">{{a.ads|length}} Annonces</spam>
+                                </div> 
+                        </div> 
+                        <p class="mt-4">{{a.description | raw}}</p>
                         
                 </div>
-    <div>
-<div> 
+    </div>
+</div> 
     {% endblock %}

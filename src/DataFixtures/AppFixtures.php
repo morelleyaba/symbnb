@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Ad;
 use Faker\Factory;
 // use Cocur\Slugify\Slugify;
+use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\Image;
 use Doctrine\Persistence\ObjectManager;
@@ -26,6 +27,30 @@ class AppFixtures extends Fixture
              // faker est une librairie qui permet de rendre plus realiste nos fausse données 
                     // via la commande ("composer require fzaninotto/faker")
         $faker=Factory::create('fr-Fr');
+
+        // __________________________Nous gerons les rolres___________________
+        $adminRole=new Role();
+        $adminRole->setTitle("ROLE_ADMIN");
+        $manager->persist($adminRole);
+
+        // petit test , inserer un utilisateur qui a le role admin_________________________
+        // commencons par creer un nouvel utilisateur
+        $adminUser=new User();
+        // L'objet "$adminUser" sur lequel on veux agir rapidement, accompagné du mot de pass encodé
+        $pwd=$this->encoder->encodePassword($adminUser,'jjjjjjjjjj');
+        $adminUser->setFirstName("Josiane")
+                  ->setLastName("Akre")
+                  ->setEmail("josiane@gmail.com")
+                  ->setPassword($pwd)
+                  ->setPicture("https://randomuser.me/api/portraits/women/43.jpg")
+                  ->setIntroduction($faker->sentence)
+                  ->setDescription('<p>'.join('<p></p>',$faker->paragraphs(2)).'</p>')
+                //   pas de "setUserRole" mais plutot "addUserRole" (aller voir que dans l'entity "user" c'est plutot la fonction "addUserRole()" pour parler de la proprieté userRole qui est de type relation)
+                //   attribuer le role d'administrateur a l'utilisateur qui vient d'etre creé
+                  ->addUserRole($adminRole);
+                //   demander a manager de persister "$adminUser" (le nouvel objet creé) affecté de ses infos 
+                  $manager->persist($adminUser);
+
         //---------------------------Nous gerons les utilisateurs-------------------
         $user=[];
         $genres=['male','female'];
@@ -36,6 +61,7 @@ class AppFixtures extends Fixture
                $picture = "https://randomuser.me/api/portraits/";
                //choisir au hazard un element du tableau (genre)
                $pictureId=$faker->numberBetween(1,99).".jpg";
+                //  si l'element choisi est "male" alors ajouter "men" dans le cas contraire ajouter "women"
                $picture .=($genre == 'male'? 'men/' : 'women/').$pictureId;
 
                //(encodePassword)prends en paramettre 2 paramettre [l'entity sur laquelle je veux operer et ensuite le mot "mot_de_passe" que je veux encoder]

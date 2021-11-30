@@ -35,7 +35,7 @@
     {% if user.ads| length > 0 %}
          <div class="row">
             {% for ad in user.ads %}
-            {# Afficher les annonces de l'utilisateur en question#}
+            {# Afficher les annonces de l'utilisateur en question #}
                 {% include "ad/_ad.html.twig" %}
             {% endfor %}
          </div>

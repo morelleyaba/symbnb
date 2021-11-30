@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdController extends AbstractController
@@ -18,7 +20,8 @@ class AdController extends AbstractController
     /**
      * Afficher les annonces venant de la table---------------------------------
      * @Route("/ads", name="ads_index")
-     * injection de dependance
+     * 
+     * injection de dependance / avec le Repository
      */
     public function index(AdRepository $repo): Response
     {
@@ -35,6 +38,9 @@ class AdController extends AbstractController
     /**
      * permet de creer une annonce
      * @Route("/ads/new", name="ads_create")
+     * 
+     * Gerez la Securité / Cette possibilité du controlleur est ouerte que pour les "user"
+     * @IsGranted("ROLE_USER")
      * @return Response
      */
     public function create(Request $request){
@@ -114,6 +120,13 @@ class AdController extends AbstractController
     /**
      *  Afficher le formulaire d'edition
      * @Route("/ads/{slug}/edit", name="ads_edit")
+     * 
+     * Gerez la Securité / Cette possibilité du controlleur est ouerte que pour les "user" auteur de l'annonce / Interdir donc a qui quonque de modifier l'annonce s'il n'est pas l'auteur
+     * le mot "user" ici signifie "l'utilisateur connecté" c'est une expression de security symfony / Rien donc a avoir avec nos variable "user" 
+     * Si l'utilisateur connecté est pareil avec l'auteur de lannonce dont nous sommes en train de regarder l'annonce/ le "ad" vient du repository de l'entity "Ad" et le "getAuthor" qui lui est issu de la proprieté "Author" de l'entity "Ad" 
+     *
+     * A revoir / j'ai pas pu le faire (dossier 9 video 5)
+     * 
      * @return Response
      */
     public function edit($slug, AdRepository $repo,Request $request):Response
@@ -151,5 +164,25 @@ class AdController extends AbstractController
         ]);
     }
 
+    // ____________________Suprimer une annonce______n'a pas marché , a revoir________
+
+
+    /**
+     * Undocumented function
+     * pour dire que la route prend un paramettre en question {id}
+     *@Route("ads/{slug}/delete", name="ads_delete")
+     */
+    public function delete(AdRepository $adRepository,$slug)
+    {
+        // appeler doctrine
+        $em = $this->getDoctrine()->getManager();
+        // retrouver l'element representé grace a l'{id} ("venu de l'url") demandé par le repository
+        $article_delete = $adRepository->find($slug);
+        dump($article_delete);
+        die();
+        $em->remove($article_delete);
+        $em->flush();
+        return $this->redirectToroute('home');
+    }
 
 }

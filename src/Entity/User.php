@@ -106,9 +106,15 @@ class User implements UserInterface
      */
     private $ads;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Role::class, mappedBy="users")
+     */
+    private $userRoles;
+
     public function __construct()
     {
         $this->ads = new ArrayCollection();
+        $this->userRoles = new ArrayCollection();
     }
 
     // _____________________creeons une fonction [getFullName()] pour  simplifier l'ecriiture du [a.firstName && a.lastName] __________________________
@@ -271,13 +277,21 @@ public function creationdeSlug()
     }
 
     /**
+     * __________________________________________Roles des Utilisateurs_____________
      * @see UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        // voir le role de l'utilisateur de la table "Role" grace a la proprieté "userRole" de "user"/ xa ramene un tableau 
+        // $roles = $this->userRoles->toArray();
+        // dump($roles);
+        $roles = $this->userRoles->map(function($role){
+            return $role->getTitle();
+        })->toArray();
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
+        // dump(array_unique($roles));
+        // die();
 
         return array_unique($roles);
     }
@@ -322,5 +336,32 @@ public function creationdeSlug()
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Role[]
+     */
+    public function getUserRoles(): Collection
+    {
+        return $this->userRoles;
+    }
+
+    public function addUserRole(Role $userRole): self
+    {
+        if (!$this->userRoles->contains($userRole)) {
+            $this->userRoles[] = $userRole;
+            $userRole->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserRole(Role $userRole): self
+    {
+        if ($this->userRoles->removeElement($userRole)) {
+            $userRole->removeUser($this);
+        }
+
+        return $this;
     }
 }

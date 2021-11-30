@@ -1,3 +1,4 @@
+{# Afficher les annonces voir (ad/index/html.twig) et (user/index/html.twig) #}
 
 {# declarer une variable 'url' qui va contenir le chemin pour ne pas a avoir reecrire tout le chemin entier plusieur fois #}
                     {% set url = path('ads_show',{'slug':ad.slug}) %}
@@ -16,8 +17,12 @@
                                  <a href="{{ url }}" style="text-decoration: none;">
                                  {{ad.title}}</a>
                                  </h4>
-                                 <p class="card-text">{{ad.content| raw}}</p>
-                                 <a class="btn btn-secondary btn-lg" href="{{ url }}" role="button">En savoir plus</a>
+                                 {# <p class="card-text">{{ad.content| raw}}</p> #}
+                                 <a class="btn btn-secondary btn-lg" href="{{ url }}" role="button">Voir plus</a>
+                        {# Si l'utilisateur est connecté, et qu'il est le meme (==) que l'auteur de cette annonce alors afficher le boutton (modifier) (le ad.author vient de ma variable "a") #}
+                        {% if app.user and app.user ==  ad.author %}
+                                <a class="btn btn-secondary btn-lg" href="{{path('ads_edit',{"slug":ad.slug} )}}">Modifier</a>                
+                        {% endif %}
                         </div>
                     </div>
                     </div>

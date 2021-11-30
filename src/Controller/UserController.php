@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class UserController extends AbstractController
 {
 
-    // ____________ Afficher le Profil de l'utilisateur/l'auteur________________
+    // ____________ Afficher le Profil d'un''utilisateur/un auteur d'annonce________________
     
    /**
     * Premiere methode avec le param converter / Mettre en paramettre l'entity concerné
@@ -53,6 +53,7 @@ class UserController extends AbstractController
      * Permet d'afficher le profil de l'utilisateur connecté
      *
      * @Route("/account", name="account_index")
+     * @IsGranted("ROLE_USER")
      * @return Response
      */
     public function myAccount(){

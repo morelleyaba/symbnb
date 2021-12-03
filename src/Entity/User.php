@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * Annotation pour gerer le cycle de vie
- * @ORM\HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks()
  * 
  * Ajouter les contraintes,on veux que "les users soit unique" avec la fonction "UniqueEntity" qui prend en parametre (les "field surlesquels on veux faire en sorte que xa soit unique )
  * le field qui nous permet de voir qu'un utilisateur doit etre unique c'est son "email"
@@ -111,10 +111,16 @@ class User implements UserInterface
      */
     private $userRoles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="booker")
+     */
+    private $bookings;
+
     public function __construct()
     {
         $this->ads = new ArrayCollection();
         $this->userRoles = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     // _____________________creeons une fonction [getFullName()] pour  simplifier l'ecriiture du [a.firstName && a.lastName] __________________________
@@ -360,6 +366,36 @@ public function creationdeSlug()
     {
         if ($this->userRoles->removeElement($userRole)) {
             $userRole->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setBooker($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getBooker() === $this) {
+                $booking->setBooker(null);
+            }
         }
 
         return $this;

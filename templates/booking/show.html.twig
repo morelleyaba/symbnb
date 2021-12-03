@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reservation N{{booking.id}} {% endblock %}
+
+{% block body %}
+
+{# creons des variables afin de reduire l'ecriture / ["booking.ad.author.picture"] deviendra ["author.picture"]  #}
+{% set ad = booking.ad %}
+{% set author = ad.author %}
+
+{# "booking" est la variable passé par le controller #}
+<div class="container">
+   <h2>Reservation (N {{booking.id}}) </h2>
+<div class="row">
+    <div class="col">
+        <div class="alert alert-light">
+            <h3>Détails</h3>
+            {# definition liste /  (dt.col-md-4+dd.col-md-8)*6 #}
+            <dl class="row">
+                <dt class="col-md-4">Numero</dt>
+                <dd class="col-md-8">{{booking.id}}</dd> 
+                <dt class="col-md-4">Nom et Prenoms</dt>
+                {# "booker"[celui qui a fait la reservation] proprieté (clé etrangere) de l'entity (booking) qui donne access au "fullName[lastName et firstName] "(propriete)de User #}
+                <dd class="col-md-8">{{booking.booker.fullName}}</dd>
+                <dt class="col-md-4">Date d'arrivée</dt>
+                <dd class="col-md-8">{{booking.startDate| date("d/m/Y")}}</dd>
+                <dt class="col-md-4">Date de depart</dt>
+                <dd class="col-md-8">{{booking.endDate| date("d/m/Y")}}</dd>
+                <dt class="col-md-4">Nombre de nuit</dt>
+                {# dans l'entity "booking.php" nous avons determiné le nbre de nuits grace a la fonction "getDuration()" #}
+                <dd class="col-md-8">{{booking.duration}}</dd>
+                <dt class="col-md-4">Montant Total</dt>
+                <dd class="col-md-8">{{booking.amount}} &euro;</dd>
+                <dt class="col-md-4">Commentaire</dt>
+                <dd class="col-md-8">{{booking.comment}}</dd>
+            </dl>
+            <hr>
+            <h3 class="alert-heading">Votre hote</h3>
+            <div class="row mb-3">
+                <div class="col-3">
+                    {# apartir de la variable "booking" acceder a la proprieté[clé etrangere] "ad" de l'entity "booking", et par lui a son tour acceder a la proprieté "autheur"[clée etrangere] de l'entity "Ad"(l'annonce), a son tour egalement acceder a la proprieté "picture" de l'entity "user" #}
+                    {# variable simplifiée (voir plus haut plus d'explication) #}
+                    <img src="{{author.picture}}" alt="Avatar de {{author.fullName}} " class="avatar avatar-medium">
+                </div>
+                <div class="col-9">
+                    <h5>
+                    {# passer le slug de l'autheur de l'annonce a l'url et afficher le profile de l'auteur de l'annonce / 
+                    cette url a ete crée deja dans le "UserController" #}
+                    <a href="{{path('user_show',{'slug':author.slug})}}"style="text-decoration: none;">{{author.fullName}} </a>
+                    </h5>
+                    {# afficher le nbre d'annonces #}
+                    <spam class="badge badge-primary">{{author.ads| length}} Annonces</spam>
+                </div>
+            </div>
+            {{author.description| raw}}
+            <a href="{{path('user_show',{'slug':author.slug})}}"style="text-decoration: none;" class="btn btn-primary">Plus d'infos sur {{author.fullName}} </a>
+        </div>
+    </div>
+    <div class="col">
+        <div class="alert alert-light">
+            <h3>Votre Hebergement</h3>
+            <h5>
+            <a href="{{path('ads_show',{'slug':ad.slug})}}"style="text-decoration: none;">
+            {{ad.title}}
+            </a>
+            </h5>
+            {# Afficher l'image principale de l'annonce #}
+            <img src="{{ad.coverImage}}" alt="Image de {{ad.title}} " class="img-fluid">
+            {{ad.content| raw}}
+            {# passer le slug de l'appartement(annonce) reservé de l'annonce a l'url et afficher les infos de l'annonce/
+             cette url a ete crée deja dans le "AdController" #}
+            <a href="{{path('ads_show',{'slug':ad.slug})}}"style="text-decoration: none;" class="btn btn-primary">Plus d'informations...</a>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

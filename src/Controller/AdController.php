@@ -166,23 +166,23 @@ class AdController extends AbstractController
 
     // ____________________Suprimer une annonce______n'a pas marché , a revoir________
 
-
     /**
-     * Undocumented function
-     * pour dire que la route prend un paramettre en question {id}
+     * resolu_____j'ai du ajouté_____"findOneBy(['slug'=>$slug])"
+     * 
+     * pour dire que la route prend un paramettre en question {slug}
      *@Route("ads/{slug}/delete", name="ads_delete")
      */
     public function delete(AdRepository $adRepository,$slug)
     {
         // appeler doctrine
         $em = $this->getDoctrine()->getManager();
-        // retrouver l'element representé grace a l'{id} ("venu de l'url") demandé par le repository
-        $article_delete = $adRepository->find($slug);
-        dump($article_delete);
-        die();
+        // rechercher l'articles dont le slug est egal au slug passé en paramettre
+        $article_delete = $adRepository->findOneBy(['slug'=>$slug]);
+        // dump($article_delete);
+        // die();
         $em->remove($article_delete);
         $em->flush();
-        return $this->redirectToroute('home');
+        return $this->redirectToroute('account_index');
     }
 
 }

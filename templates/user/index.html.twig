@@ -30,7 +30,7 @@
     </div>
     {{user.description | raw}}
     <hr>
-    <h2>Les annonces de {{user.fullName}}</h2>
+    <h2 class="mb-4">Les annonces de {{user.fullName}}</h2>
     {# si le nombre d'annonce de l'utilisateur est superieur a zero #}
     {% if user.ads| length > 0 %}
          <div class="row">

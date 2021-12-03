@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reserver l'annonce :{{ad.title}} {% endblock %}
+
+{% block body %}
+
+<div class="container">
+        <h2>Reserver pour l'annonce : {{ad.title}} </h2>
+
+        {# pour recuperer le nom de la personne, a partir du "ad" venu de notre controller "BookingController" (& issu de l'entity "Ad" par le paramConerter ) qui nous donne acces a la clé etrangere "author_id"(author=> proprieté) de l'entity "Ad" qui lui a son tour nous donne acces au champs/proprieté "firstName et lastName" de l'entity "user" vu que ces deux entity sont liés par [le author_id] #}
+            <p>Vous etes sur le point de reserer le bien de <strong>{{ad.author.fullName}} </strong> </p>
+
+        {{form_start(formBook)}}
+            <div class="alert alert-light">
+            <h4>Quelles sont les dates qui vous interressent !</h4>
+            
+            <div class="row">
+                <div class="col">
+                    {{form_row(formBook.startDate)}}
+                </div>
+                <div class="col">
+                    {{form_row(formBook.endDate)}}
+                </div>
+            </div>  
+            </div>
+            <h6>montant du sejour : <span id="amount">....</span> &euro;</h6>
+            <spam id="days">0 </spam>nuit(s) a {{ad.price}} &euro;/ Nuit
+            <br>
+            <br>
+            <br>
+            <h4>Vous avez un commentaire ?</h4>
+                    {{form_row(formBook.comment)}}
+
+        <button type="submit" class="btn btn-success mt-4">Je reserve !</button>
+        {{form_end(formBook)}}
+</div>
+{% endblock %}

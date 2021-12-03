@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\AdRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 //Validation de champs
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 //Validation de l'entity elle meme
 // use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -14,8 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AdRepository::class)
- * Anntation pour gerer le cycle de vie
- * @ORM\HasLifecycleCallbacks
+ * Anntation pour gerer le cycle de vie (prepersite et autre)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Ad
 {
@@ -73,9 +75,16 @@ class Ad
      */
     private $author;
 
+    /**
+     * ajouter 'cascadeleRemove' vu que j'arrivais pas a le suprimer
+     * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="ad",cascade={"remove"})
+     */
+    private $bookings;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     // ___________________on aimerait que les slugs soit generés automatiquement_________________________
@@ -224,6 +233,36 @@ class Ad
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setAd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getAd() === $this) {
+                $booking->setAd(null);
+            }
+        }
 
         return $this;
     }

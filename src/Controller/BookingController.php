@@ -45,11 +45,28 @@ class BookingController extends AbstractController
                             // ->setCreatedAt() allez voir dans l'entity "booking.php" vu que la date de creation doit s'incrementer automatiquement
                             // ->setAmount("")pareil pour le prix du sejour
                             ->setComment($booking->getComment());
+                // ______________________________________Avant de persister l'annonce____
 
-                    $em->persist($booking);
-                    $em->flush();
-                        // passer "l'id" de la reservation par l'url de la page de redirection "booking_show"
-                    return $this->redirectToRoute("booking_show",["id"=>$booking->getId()]);
+                        #si les date ne sont pas disponibles, message d'erreur
+                        if (!$booking->isBookabbleDates()) {
+                                $this->addFlash(
+                                        "warning",
+                                        "les dates que vous avez choisis ne sont plus disponible"
+                                );
+                        }#sinon
+                        else {
+                                
+                                $em->persist($booking);
+                                $em->flush();
+                                // passer "l'id" de la reservation par l'url de la page de redirection "booking_show"
+                                // passer "l'id" de la reservation par l'url de la page de redirection "booking_show"
+                                        return $this->redirectToRoute("booking_show",[
+                                                "id"=>$booking->getId(),
+                                                "withAlert"=>true
+                                        ]);
+                        
+                        }
+                // ______________________________________
             }
             return $this->render('booking/book.html.twig', [
                     'ad'=>$ad,

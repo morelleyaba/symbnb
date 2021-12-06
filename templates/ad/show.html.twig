@@ -12,11 +12,11 @@
             <p class="h2">
             <strong>{{ad.rooms}}chambres </strong> pour <strong>{{ad.price}}&euro; </strong> par nuit
             </p>
-    {% if app.user and app.user !=  ad.author %}
+    
             {# reserver un article / passer le slug en paramettre #}
             <a class="btn btn-primary btn-lg" href="{{path('booking_create',{"slug":ad.slug} )}}">Reserver</a>  
             {# Si l'utilisateur est connecté, et qu'il est le meme (==) que l'auteur de cette annonce alors afficher le boutton (modifier) et le boutton (suprimer) #}
-    {% else %}
+    {% if app.user and app.user ==  ad.author %}
             <a class="btn btn-secondary btn-lg" href="{{path('ads_edit',{"slug":ad.slug} )}}">Modifier l'annonce</a>                
             <a href="{{ path('ads_delete',{"slug":ad.slug}) }}" class="btn btn-danger btn-lg" onclick="return confirm(`Etes vous sur de vouloir suprimer l'annonce {{ad.title}} ?`)">suprimer</a>                
     {% endif %}

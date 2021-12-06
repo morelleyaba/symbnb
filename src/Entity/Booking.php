@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
@@ -28,6 +29,7 @@ class Booking
     private $booker;
 
     /**
+     * le champ ad qui represente l'annonce a laquelle la reservation est liée
      * @ORM\ManyToOne(targetEntity=Ad::class, inversedBy="bookings")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -35,11 +37,13 @@ class Booking
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Date(message="Attention ! la date d'arrivée doit etre au bon format")
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Date(message="Attention ! la date de depart doit etre au bon format")
      */
     private $endDate;
 
@@ -57,35 +61,91 @@ class Booking
      * @ORM\Column(type="text", nullable=true)
      */
     private $comment;
-// _______________________________Gestion de La date de creation et le prix du sejour___________
-/**
- * Callback appelé a chaque fois qu'on crée une reservation
- * @ORM\PrePersist
- *
- * @return void
- */
+
+    // ____________________Gestion de La date de creation de l'annonce et le prix du sejour______
+    /**
+     * Callback appelé a chaque fois qu'on crée une reservation
+     * @ORM\PrePersist
+     *
+     * @return void
+     */
     public function persist(){
 
-        // si la date de creation dans la table est vide, alors ajouter la date d'aujourd'huit
-        if(empty($this->createdAt)){
-            $this->createdAt=new \DateTime();
-        }
+            // si la date de creation dans la table est vide, alors ajouter la date d'aujourd'huit
+            if(empty($this->createdAt)){
+                $this->createdAt=new \DateTime();
+            }
 
-        // prix du sejour
-        if(empty($this->amount)){
-            // multiplier le prix de l'annonce par le nombre de jours du sejour 
-            $prix=$this->ad->getPrice()*$this->getDuration();
-            $this->amount=$prix;
-        }
+            // prix du sejour
+            if(empty($this->amount)){
+                // multiplier le prix de l'annonce par le nombre de jours du sejour 
+                $prix=$this->ad->getPrice()*$this->getDuration();
+                $this->amount=$prix;
+            }
     }
 
-     // a l'aide de la fonction "diff" determinons le nbre de jour entre la date de fin et celle du debut
+    // a l'aide de la fonction "diff" determinons le nbre de jour entre la date de fin et celle du debut
     public function getDuration() {
        
-        $dureeSejour=$this->endDate->diff($this->startDate);
-        return $dureeSejour->days;
+            $dureeSejour=$this->endDate->diff($this->startDate);
+            return $dureeSejour->days;
     }
-// _________________________________________fin______________________________
+    // ________________________________________D11-V12__Gestion de la disponibilité d'une annonce lors de la reservation_
+
+    public function isBookabbleDates(){
+        // recuperer les jours deja occupés et les comparer avec les jours choisis pour cette reservation
+        // creer une fonction ("getNotAvailableDays") au sein de l'entity Ad
+        // 1) Connaitre les dates impossibles pour l'annonces ("getNotAvailableDays()")
+            # le champ "ad" qui represente l'annonce a laquelle la reservation est liée
+        $notAvailableDays=$this->ad->getNotAvailableDays();
+        // 2) comparer les dates choisies avec les dates impossibles
+        #Date choisies
+        $bookingDays=$this->getDays();
+                                         #_________________
+
+        // 2 Tableaux des chaines de caracteres de mes journées / Les reconvertir en chaines de caractere ("sous formes string") en date vu qu'ils etaient sous forme de ("objet dateTime") 
+                    #factoriser pour eviter les repetitions
+                    $formatDays=function($day){
+                        return $day->format("Y-m-d");
+                    };
+
+        $days         = array_map($formatDays, $bookingDays);
+
+        $notAvailable = array_map($formatDays,$notAvailableDays);
+                                         #_________________
+        foreach ($days as $day) {
+            # On regarde pour chaque journée de mon sejour choisis, est-ce qu'elle est presente dans le tableau des jours impossible grace a la fonction 
+            if (array_search($day,$notAvailable)!== false)return false;
+        }
+        return true;
+    }
+    // ________________________________Un tableau d'objets DateTime representant les jours de la reservation
+    /**
+     * Permet de recuperer un tableau des journées qui correspondent a ma reservation
+     * 
+     * @return array
+     */
+    public function getDays(){
+        
+        # Pour la reservation faites pour cette annonce(appartement)
+        
+            # Calculer les jours qui se trouvent entre la date d'arrivée et de depart grace a la fonction range()
+            # tout en les convertissant en miliSecondes grace a la fonction getTimestamp()
+            $resultat= range(
+                $this->getStartDate()->getTimestamp(),
+                $this->getEndDate()->getTimestamp(),
+                24*60*60
+            );
+
+            $days=array_map(function($dayTimestamp){
+                return new \DateTime(date("Y-m-d",$dayTimestamp));
+            },$resultat);
+            #
+            // $getDays=array_merge($getDays, $days);
+      
+        return $days;
+    }
+    // _________________________________________fin______________________________
 
     public function getId(): ?int
     {

@@ -95,8 +95,8 @@ class AppFixtures extends Fixture
                     // crer une variable $title qui demande a faker de generer un mot au hazar,
                     // on aura donc du text au hazar dans notre title grace a la fonction (sentence)
                 $title=$faker->sentence();
-                // faker nous permet egalement d'avoir des URL d'image grace a la methode (imageURL)
-                $coverImage=$faker->imageURL(1000,350);
+                // faker nous permet egalement d'avoir des URL d'image grace a la methode (imageUrl)
+                $coverImage=$faker->imageUrl(1000,350);
                 $introduction=$faker->paragraph(2);
                 $content= '<p>'.join('<p></p>',$faker->paragraphs(3)).'</p>' ;
 

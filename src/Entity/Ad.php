@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Booking;
 use Cocur\Slugify\Slugify;
 use App\Repository\AdRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -104,7 +105,33 @@ class Ad
             $this->slug=$slugify->slugify($this->title);
         }
     }
-    // ________________________________________________
+    // ________________D11-V12_________________Obtenir un tableau des jours qui ne sont pas disponibles pour cette annonce_______________
+    /**
+     * Un tableau d'objets DateTime representant les jours d'occupation de l'appartement / booking.php
+     *
+     * @return array
+     */
+    public function getNotAvailableDays(){
+        $notAvailableDays=[];
+        # Pour chaque reservations deja faites pour cette annonce(appartement)
+        # le champ "bookings" qui represente la reservation a laquelle l'annonce est liée 
+        foreach ($this->bookings as $booking) {
+            # Calculer les jours qui se trouvent entre la date d'arrivée et de depart grace a la fonction range()
+            # tout en les convertissant en miliSecondes grace a la fonction getTimestamp()
+            $resultat= range(
+                $booking->getStartDate()->getTimestamp(),
+                $booking->getEndDate()->getTimestamp(),
+                24 * 60 * 60
+            );
+            $days=array_map(function($dayTimestamp){
+                return new \DateTime(date("Y-m-d",$dayTimestamp));
+            },$resultat);
+            #
+            $notAvailableDays=array_merge($notAvailableDays, $days);
+        }
+        return $notAvailableDays;
+    }
+    // ______________________________fin__________________
     
     public function getId(): ?int
     {

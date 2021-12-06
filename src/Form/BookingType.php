@@ -22,7 +22,8 @@ class BookingType extends ApplicationType
             // ->add('amount') pareil pour le prix
             // ->add('booker') l'auteur de la reservation va s'enregistrer seul voir le controller de booking
             // ->add('ad') pareil pour l'annonce
-            ->add('comment',TextareaType::class,$this->getConfiguration(false,"Si vous avez un commentaire,n'hesitez pas a en faire part !"))
+            // supprimer le label en le mettant en false, rendre le commentaire optionnel (pas obligatoire) en ajoutant une nouvelle configuration de ("["required"=>false]")
+            ->add('comment',TextareaType::class,$this->getConfiguration(false,"Si vous avez un commentaire,n'hesitez pas a en faire part !",["required"=>false]))
         ;
     }
 

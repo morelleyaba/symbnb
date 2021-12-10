@@ -38,12 +38,15 @@ class Booking
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="Attention ! la date d'arrivée doit etre au bon format")
+     * @Assert\GreaterThan("today", message="La date d'arrivée doit etre ulterieur a la date d'aujourdh'huit !")
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="Attention ! la date de depart doit etre au bon format")
+     * la proprieté "propertyPath" fais intervenir un autre champ qui va servir de comparaison (de superiorité grace a "GreaterThan")
+     * @Assert\GreaterThan(propertyPath="startDate",message="La date de depart ne peut etre anterieure a la date d'arrivée !")
      */
     private $endDate;
 

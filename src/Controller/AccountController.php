@@ -168,4 +168,17 @@ class AccountController extends AbstractController
         ]);
      }
 
+    //  ____________________________________liste des reservation de l'utilisateur connecté_
+    
+     /**
+      * Afficher la liste de reservation du client / utilisateur connecté
+      * @Route("/account/bookings", name="account_bookings")
+      * @return Response
+      */
+
+     public function booking(){
+         
+        return $this->render('account/bookings.html.twig',
+    );
+     }
 }

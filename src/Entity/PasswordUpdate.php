@@ -15,6 +15,7 @@ class PasswordUpdate
     private $newPassword;
 
     /**
+     * la proprieté "propertyPath" fais intervenir un autre champ qui va servir de comparaison (d'egalité grace a "EqualTo")
      * @Assert\EqualTo(propertyPath="newPassword",message="Vous n'aviez pas correctement entré votre nouveau mot de pass !")
      */
     private $confirmPassword;

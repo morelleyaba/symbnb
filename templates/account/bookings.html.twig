@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos reservations passées et a venir{% endblock %}
+{% block body %}
+<div class="container">
+<h2>Mes reservations</h2> 
+<div class="alert alert-info mt-3">
+<p>Retrouvez ci-dessous vos reservations passées et a venir</p>
+</div>
+{# on faire appelle a notre variable "app" qui contient notre "user" (app) qui est connecté et ce "user" a des "bookings" (proprieté a l'interieur de 'entity "user" issu de la reation (booking  et user [cle etrangere (sur le booking) =>booking_id])) #}
+{% for booking in app.user.bookings %}
+    <div class="row mt-5">
+            <div class="col-4">
+            {# la photo de l'annonce qui est concerné par la reservation #}
+            {# nous avons notre reservation,dans cette reservation nous avons notre annonce "ad"(proprieté a l'interieur de 'entity "booking" issu de la reation (booking  et ad [cle etrangere (sur le booking) =>ad_id])) qui nous permetra d'avoir acces a la "coverImage" proprieté de "ad" #}
+            <img src="{{booking.ad.coverImage}}" alt="Photo de l'annonce {{booking.ad.title}}" class="img-fluid"></div>
+            <div class="col-8">
+            <h4>{{booking.ad.title}}</h4>
+        <p>
+        Reservation <strong>N°{{booking.id}}</strong><br>
+        Du {{booking.startDate|date('d/m/Y')}} au {{booking.endDate|date('d/m/Y')}} ({{booking.amount}} &euro;)
+        </p>
+        {# plus d'infos sur la reservation en question; bookingController qui nous affiche la page (booking/show.html.twig) #}
+        <a href="{{path("booking_show",{"id":booking.id} )}}" class="btn btn-info">
+        Plus d'information
+        </a>
+            </div>
+        </div>
+{% endfor %}
+</div>
+{% endblock %}
+

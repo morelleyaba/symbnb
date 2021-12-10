@@ -2,6 +2,17 @@
 
 {% block title %}Reserver l'annonce :{{ad.title}} {% endblock %}
 
+{% block stylesheets %}
+{# Ajouter du style sur les journée impossible a choisir #}
+    <style>
+    .datepicker table tr td.disabled, .datepicker table tr td.disabled:hover{
+    background-color: #DDD !important;padding: 1px;color:firebrick !important;}
+    </style>
+
+{# cdn css calendrier javascript personnalisé #}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"/>
+{% endblock %}
+
 {% block body %}
 
 <div class="container">
@@ -22,16 +33,69 @@
                     {{form_row(formBook.endDate)}}
                 </div>
             </div>  
-            </div>
-            <h6>montant du sejour : <span id="amount">....</span> &euro;</h6>
-            <spam id="days">0 </spam>nuit(s) a {{ad.price}} &euro;/ Nuit
+            <h6 class="mt-2">montant du sejour : <span id="amount">...</span> &euro;</h6>
+            <spam id="days">0</spam>nuit(s) a {{ad.price}} &euro;/ Nuit
             <br>
             <br>
-            <br>
-            <h4>Vous avez un commentaire ?</h4>
+            <h4 class="mt-4">Vous avez un commentaire ?</h4>
                     {{form_row(formBook.comment)}}
+            </div>
 
         <button type="submit" class="btn btn-success mt-4">Je reserve !</button>
         {{form_end(formBook)}}
 </div>
 {% endblock %}
+
+{% block javascripts %}
+{# cdn js calendrier javascript personnalisé "datepicker" #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js
+"></script>
+<script>
+$(document).ready(function(){
+    //selection des champs de la date pour afficher notre calendrier personnalisé, faudrait donc changer le type de champ des dates dans bookType.php, vu qu'on desire utiliser un calendrier javascript personnalisé
+    $('#booking_startDate,#booking_endDate').datepicker({
+        //Le calendrier personnalisé javascript change le format de la date en anglais (mois/jour/année)nous aimerons le rendre en format francais (jj/mm/AA)
+        //changer le format d'affichage de la date sur le site de reservation
+        format: 'dd/mm/yyyy',
+        //les journées qui ne sont pas possibles de selectionées (les jours impossibles "getNotAvailableDays"cf:Ad.php)
+        datesDisabled:[
+                {% for day in ad.getNotAvailableDays %}
+                    "{{day.format('d/m/Y')}}",
+                {% endfor %}
+        ],
+        //Empecher qu'on reserve avant la date d'aujourd'huit grace a la proprieté js "startDate"
+        startDate:new Date()
+    });
+    
+    //Appeler notre fonction "calculateAmount()" quand les champs date sont remplis
+    $('#booking_startDate,#booking_endDate').on('change',calculateAmount);
+
+});
+{# _______________________N'a pas marché on revient after_______D11-V16______________ #}
+
+    {# Afficher le montant en fonction des dates choisies par l'utilisateur #}
+    function calculateAmount(){
+        //On chope les dates (\d+)\/(\d+)\/(\d{4})
+        const endDate   = new Date($('booking_endDate').val().replace(/(\d+)\/(\d+)\/(\d{4})/,'$3-$2-$1'));
+        const startDate = new Date($('booking_startDate').val().replace(/(\d+)\/(\d+)\/(\d{4})/,'$3-$2-$1'));
+
+        if (endDate && startDate && endDate > startDate ) {
+        //on utilise la methode js "getTime()" [en miliSeconde] qui nous donne un timestamp, on peut pas faire [endDate - startDate] ce sont des dates
+            const interval  =   endDate.getTime() - startDate.getTime();
+            const day_time  =   24*60*60*1000;
+            //nbre de jours
+            const days      =   interval/day_time;
+            //prix par nbre de jours
+            const amount    =   days*{{ad.price}};
+
+            //affecter les prix && le nbre de jours L-36/37
+            $('#days').text(days);
+            $('#amount').text(amount.toLocaleString('fr-FR'));
+
+        }
+    }
+{# ____________________________________________ #}
+
+</script>
+{% endblock %}
+

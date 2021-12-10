@@ -47,11 +47,11 @@ class BookingController extends AbstractController
                             ->setComment($booking->getComment());
                 // ______________________________________Avant de persister l'annonce____
 
-                        #si les date ne sont pas disponibles, message d'erreur
+                        #si les date ne sont pas disponibles, message d'erreur a l'utilisateur
                         if (!$booking->isBookabbleDates()) {
                                 $this->addFlash(
                                         "warning",
-                                        "les dates que vous avez choisis ne sont plus disponible"
+                                        "les dates que vous avez choisis ont deja été reservé pour cette annonce"
                                 );
                         }#sinon
                         else {
@@ -89,7 +89,12 @@ class BookingController extends AbstractController
                 ]);
         }
 
-    // ______________2me methode__________Reserver un appartement__________
+
+
+
+        
+
+    // ______________2me methode__________Reserver un appartement______(pas pris le jaascript en compte)____
 
     // /**
     //  * avant l'utilisation de cette methode, veuillez suprimer les configuration ajouter mannuellement dans la table "booking"(le cycle de vie) vu que tout se fera ici directement

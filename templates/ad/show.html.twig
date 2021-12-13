@@ -59,7 +59,50 @@
             <span class="sr-only">Next</span>
         </a>
 </div>
-
+<hr>
+            {# s'il y'a des commentaires on les affiche si non ne pas les afficher  #}
+            {# "comments" la proprieté ajouté a l'entity "Ad" issu de la relation (Ad et Comment) avec la clé etrangere "author_Id" #}
+            {# la proprieté "comments" ajoutée de l'autre part va permettre de recuperer les commentaires #}
+            {% if ad.comments|length > 0 %}
+                    <h3 class="mb-3">commentaires de nos voyageurs</h3>
+                    {# _______________ #}
+                    <div class="alert alert-info">
+            <h6 class="alert-heading text-center">
+                <div class="row align-items-center">
+                    <div class="col">
+                        Notes globale donnée par nos voyageurs 
+                    </div>
+                    <div class="col">
+                    {# Moyenne des notations venant de "getAvgRatings()" voir l'entity "ad.php" #}
+                        {% include 'partials/rating.html.twig' with {'rating':ad.getAvgRatings} %}
+                        <br>
+                        <small>
+                            (Calculé sur {{ad.comments|length}} avis)
+                        </small>
+                    </div>
+                </div>
+            </h6>
+        </div>
+                    {# _______________ #}
+                    {% for comment in ad.comments %}
+                            <div class="bg-light rounded mb-3 py-3 px-3">
+                            {# l'auteur du commentaire #}
+                                <strong>{{comment.author.fullName}} </strong> a dit :
+                                <blockquote> 
+                                {# contenu du commentaire #}
+                                {{comment.content}}
+                                </blockquote> 
+                                {# note donnée par l'autheur du commentaire #}
+                                <strong>Note donnée :</strong>
+                                {# le nbre des etoiles : {{comment.rating}} #}
+                                {# inclure le fichier de rating #}
+    {# ________________________ {% set rating = comment.rating %} / On peut faire autrement en passant la variable dans include avec "with ...." #}
+                                {% include 'partials/rating.html.twig' with {'rating':comment.rating} %}
+                            </div>
+                    {% endfor %}
+            {% else %}
+                <h4>Cette annonce n'a pas encore recu de commentaires</h4> 
+            {% endif %}
     
                 </div>
                 
@@ -96,4 +139,5 @@
                 </div>
     </div>
 </div> 
+
     {% endblock %}

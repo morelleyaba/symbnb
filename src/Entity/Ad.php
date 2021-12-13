@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use App\Entity\Booking;
 use Cocur\Slugify\Slugify;
 use App\Repository\AdRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 //Validation de champs
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 //Validation de l'entity elle meme
@@ -82,10 +83,16 @@ class Ad
      */
     private $bookings;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="ad", orphanRemoval=true)
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->bookings = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     // ___________________on aimerait que les slugs soit generés automatiquement_________________________
@@ -130,6 +137,42 @@ class Ad
             $notAvailableDays=array_merge($notAvailableDays, $days);
         }
         return $notAvailableDays;
+    }
+    // ____________________Calcul de la moyenne globale des notes donnés par les clients pour cette annonce______D12-V7___04 minutes
+    
+    /**
+     * Undocumented function
+     *
+     * @return float
+     */
+    public function getAvgRatings(){
+        // calculer la somme des notations
+        $sum=array_reduce($this->comments->toArray(),function($total,$comment){
+            return $total+$comment->getRating();
+        },0);
+        // faire la division pour avoir la moyenne
+        if(count($this->comments)>0) return $sum/count($this->comments);
+        return 0;
+    }
+    // ______________________________Verifier si l'auteur d'une reservation a deja fais un commentaire__________________
+    
+    /**
+     * Permet de recuperer le commentaire d'un auteur par rapport a une annonce
+     *
+     * @param User $author
+     * @return Comment|null
+     */
+
+    //  notre fonction recevra en parametre "l'utilisateur connecté" lorsque la fonction sera utilisé dans "booking/show.html.twig"
+    public function getCommentFromAuthor(User $author){
+        // trouvons un commentaire a partir d'un auteur
+        // est ce que parmis tout les commentaires liés a cette annonce,y'a t'il un commentaire dont l'auteur est identique a cet autheur dont on me parle ici dans ma fonction
+        foreach ($this->comments as $comment) {
+            # code...
+            if ($comment->getAuthor() === $author) return $comment;
+        }
+        return null;
+        
     }
     // ______________________________fin__________________
     
@@ -288,6 +331,36 @@ class Ad
             // set the owning side to null (unless already changed)
             if ($booking->getAd() === $this) {
                 $booking->setAd(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setAd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getAd() === $this) {
+                $comment->setAd(null);
             }
         }
 

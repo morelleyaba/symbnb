@@ -3,12 +3,13 @@
 namespace App\DataFixtures;
 
 use App\Entity\Ad;
-use App\Entity\Booking;
 use Faker\Factory;
-// use Cocur\Slugify\Slugify;
 use App\Entity\Role;
+// use Cocur\Slugify\Slugify;
 use App\Entity\User;
 use App\Entity\Image;
+use App\Entity\Booking;
+use App\Entity\Comment;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -149,7 +150,7 @@ class AppFixtures extends Fixture
                         // Entre 0 et le nombre d'utilisateurs disponibles
                         $booker=$users[mt_rand(0, count($users)-1)];
 
-                // ____________Affecter les infos des Reservations_____________
+                // ________________________Affecter les infos des Reservations_____________
                 // commentaires
                 $comment=$faker->paragraph();
                 $booking->setBooker($booker)
@@ -162,6 +163,26 @@ class AppFixtures extends Fixture
                 // enregistrer la reservation
                 $manager->persist($booking);
 
+                //_________________________Gestion des commentaires de la reservation___
+
+                        #on voudrait pas que toute les reservations on des commentaires, donc on fera une condition pour departager et affecter un commentaire qu'on a "1" et aucun commentaire quand on a "0"
+                        #une reservation sur deux aura donc un commentaire
+                        if (mt_rand(0,1)) {
+                                # code...
+                                $content=$faker->paragraph();
+                                $comment=new Comment();
+                                
+                                $comment->setRating(mt_rand(1,5))
+                                        ->setContent($content)
+                                        #l'annonce / l'appartement qui est reservé (voir plus haut dans le booking)
+                                        ->setAd($ad)
+                                        #l'auteur de la reservation, deja calculé dans le booking plus haut
+                                        ->setAuthor($booker);
+                                        //gerer la date de creation du commentaire dans l'entity "comment"
+                                        // enregistrer le commentaire de la reservation
+                        $manager->persist($comment);
+                        }
+                // ____________________________
 
 
         }

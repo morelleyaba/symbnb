@@ -8,7 +8,7 @@
     <div class="row align-items-center">
         <div class="col-md-3 text-center">
         {# Afficher l'image de l'utilisateur #}
-            <img src="{{user.picture}}" class="avatar mb-3" alt="Avatar de {{user.fullName}}" style="max-width:  64 px;max-height: 64 px; border-radius: 50%;">
+            <img src="{{user.picture}}" class="avatar mb-3 avatar-medium" alt="Avatar de {{user.fullName}}" >
             <br>
             {# Afficher le nombre d'annonces que l'utilisateur possede #}
             <spam class="badge badge-primary bg-primary">{{user.ads| length}} Annonces</spam>

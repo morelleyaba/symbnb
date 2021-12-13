@@ -2,17 +2,19 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Ad;
 use App\Entity\Booking;
+use App\Entity\Comment;
 use App\Form\BookingType;
+use App\Form\CommentType;
 use App\Repository\AdRepository;
-use DateTime;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 
 // _________________Reservation d'un appartement____Premiere methode______________
 
@@ -21,6 +23,7 @@ class BookingController extends AbstractController
     /**
      * Premiere methode, j'ai du ajouter le adrepository a la L-6 de l'entity ad afin que mon param converter passe
      * @Route("/ads/{slug}/book", name="booking_create")
+     * autorisé aux personnes connectées
      *  @IsGranted("ROLE_USER")
      * @param Ad $ad
      * @return Response
@@ -74,24 +77,46 @@ class BookingController extends AbstractController
             ]);
     }
 
-        // __________________Afficher la page de reservation_____________
+        // __________________Afficher la page de success apres la reservation______avec l'interieure le formulaire de commentaires de satisfation sur l'annonce_______
 
         /**
-         * Undocumented function
+         * On ne commente pas la reservation, c'est l'annonce qu'on commente
          *@Route("/booking/{id}", name="booking_show")
          * @param Booking $booking
-         * @return void
+         * @param Request $request
+         * @return Response
          */
-        public function show(Booking $booking){ 
+        public function show(Booking $booking,Request $request){ 
+
+                $comment=new Comment();
+                // creeons notre formulaire
+                $formComment=$this->createForm(CommentType::class,$comment);
+                $formComment->handleRequest($request);
+                if ($formComment->isSubmitted() && $formComment->isValid()) {
+                        // recuperons l'utilisateur connecté qui a effectué l'annonce
+                        $author=$this->getUser();
+                        // recuperons l'annonce qui a été reservé qui de booking(en paramettre)et a partir de booking recuperer le "ad" de la proprieté "ad"[ad_id] de l'entity "booking"
+                        $ad=$booking->getAd();
+                        $comment->setAd($ad)
+                                ->setAuthor($author);
+
+                        $em=$this->getDoctrine()->getManager();
+                        // demander a doctrine de persister le commentaire
+                        $em->persist($comment);
+                        $em->flush();
+
+                        // message flash
+                        $this->addFlash(
+                                'success',
+                                "Votre commentaire a bien été enregistrer"
+                        );
+                }
 
                 return $this->render("booking/show.html.twig",[
-                        'booking'=>$booking
+                        'booking'=>$booking,
+                        'formComment'=>$formComment->createView(),
                 ]);
         }
-
-
-
-
         
 
     // ______________2me methode__________Reserver un appartement______(pas pris le jaascript en compte)____

@@ -87,7 +87,8 @@ class Booking
             }
     }
 
-    // a l'aide de la fonction "diff" determinons le nbre de jour entre la date de fin et celle du debut
+    //______________________ a l'aide de la fonction "diff" determinons le nbre de jour entre la date de fin et celle du debut
+    
     public function getDuration() {
        
             $dureeSejour=$this->endDate->diff($this->startDate);

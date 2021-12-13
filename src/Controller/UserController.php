@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class UserController extends AbstractController
 {
 
-    // ____________ Afficher le Profil d'un''utilisateur/un auteur d'annonce________________
+    // ____________ Afficher le Profil d'un''utilisateur/un auteur d'annonce a partir d'une de ses annonces________________
     
    /**
     * Premiere methode avec le param converter / Mettre en paramettre l'entity concerné

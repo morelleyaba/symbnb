@@ -3,10 +3,18 @@
 {# declarer une variable 'url' qui va contenir le chemin pour ne pas a avoir reecrire tout le chemin entier plusieur fois #}
                     {% set url = path('ads_show',{'slug':ad.slug}) %}
                     <div class="col-md-4">
-                    <div class="card bg-light mb-3">
+                    <div class="card bg-light mb-3"> 
                         <div class="card-hearder text-center">
                                 {{ad.rooms}}, <strong>{{ad.price}}&euro; / nuit </strong><br>
-                                 <small>pas encore noté</small>
+                                {# s'il existe des commentaires, alors afficher la moyenne des notations #}
+                                {% if ad.comments|length > 0 %}
+                                 <small>
+                        {# Moyenne des notations venant de "getAvgRatings()" voir l'entity "ad.php" #}
+                        {% include 'partials/rating.html.twig' with {'rating':ad.getAvgRatings} %}
+                                 </small>
+                                 {% else %}
+                                <small>pas encore noté</small>
+                                 {% endif %}
                         </div>
                                 {# envoyer le slug en paramettre de l'url (voir adController.php @ROUTE L-27) #}
                                 <a href="{{ url }}">

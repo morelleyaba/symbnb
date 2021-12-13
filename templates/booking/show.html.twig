@@ -51,7 +51,8 @@
                 <dt class="col-md-4">Montant Total</dt>
                 <dd class="col-md-8">{{booking.amount}} &euro;</dd>
                 <dt class="col-md-4">Commentaire</dt>
-                <dd class="col-md-8">{{booking.comment}}</dd>
+                {# s'il n'y a pas de commentaires, utiliser le filtre "default" de symfony pour afficher le message #}
+                <dd class="col-md-8">{{booking.comment| default('Aucun commentaire')}}</dd>
             </dl>
             <hr>
             <h3 class="alert-heading">Votre hote</h3>
@@ -74,6 +75,36 @@
             {{author.description| raw}}
             <a href="{{path('user_show',{'slug':author.slug})}}"style="text-decoration: none;" class="btn btn-primary">Plus d'infos sur {{author.fullName}} </a>
         </div>
+        {# ___________Formulaire du commentaire de reservation #}
+
+        <div class="alert alert-light" id="comment">
+            <h3 class="alert-heading">Votre avis compte !</h3>
+{#_____________________ autoriser uniquement un locataire qui a terminé son sejour a laisser un commentaire et une note pour l'annonce #}
+                {# si la date "date()" [fonction symfony date pour signifier la date d'aujourd'huit] est superieure a la date de fin de sejour #}
+                {% if date() > date(booking.endDate) %}
+
+                        {# fonction "getCommentFromAuthor()" defini dans l'entity "Ad.php" #}
+                        {% set comment = booking.ad.getCommentFromAuthor(app.user)  %}
+                        {# la variable "comment" renvoie "null" s'il n'y a pas de commentaires #}
+                        {% if comment is not null %}
+                            <blockquote>
+                            {{comment.content}}
+                            </blockquote>
+                            {# afficher la note que j'ai donné / Voir "ad/show.html.twig" L-99 , la note etoilé donné par l'utilisateur #}
+                            <strong>Note :</strong>{% include 'partials/rating.html.twig' with {'rating':comment.rating} %}
+                        {% else %}
+                            {# afficher notre formulaire #}
+                            {{form_start(formComment)}}
+                            {{form_widget(formComment)}}
+                            <button type="submit" class="btn btn-primary mt-4">J'enregistre </button>
+                            {{form_end(formComment)}}
+                        {% endif %}
+                {# si la date de fin n'est encore arrivé alors #}
+                {% else %}
+                    <p>Vous n'etes pas autorisé a noter cette annonce a moins que votre voyage soit complet
+                {% endif %}
+        </div>
+        {# _________________________ #}
     </div>
     <div class="col">
         <div class="alert alert-light">

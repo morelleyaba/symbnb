@@ -35,3 +35,11 @@ div.carousel-caption{
     padding: 1px;
     color:firebrick !important;
 }
+
+span.rating i{
+    color: goldenrod;
+}
+
+a{
+    text-decoration: none;
+}

@@ -16,7 +16,7 @@
             <img src="{{booking.ad.coverImage}}" alt="Photo de l'annonce {{booking.ad.title}}" class="img-fluid">
             
             {# _____________D12-V13____________________ Affichage des notes de l'utilisateur connecté sur la liste des reservations #}
-            
+             
             <div class="mt-3">
                 {# fonction "getCommentFromAuthor()" defini dans l'entity "Ad.php" #}
                 {% set comment = booking.ad.getCommentFromAuthor(app.user) %}
@@ -25,10 +25,10 @@
                 Note donnée :</strong>
                 {% include "partials/rating.html.twig" with {'rating': comment.rating} %}
                 {% else %}
-                    Vous n'avez pas encore donné de note.
+                    Vous n'avez pas encore donné de note. 
                     {# nous rammener sur la page de succes de reservation, afin de laisser un commentaire sur  #}
                     {# le "#comment" me permet de cibler directement la div du formulaire de commentaire avec l'id = "comment" #}
-                <a href="{{ path('booking_show',{'id':booking.id}) }}#comment">
+                <a href="{{ path('booking_show',{'slug':booking.slug}) }}#comment">
                     Je donne mon avis !
                 </a>
                 {% endif %}
@@ -42,7 +42,7 @@
         Du {{booking.startDate|date('d/m/Y')}} au {{booking.endDate|date('d/m/Y')}} ({{booking.amount}} &euro;)
         </p>
         {# plus d'infos sur la reservation en question; bookingController qui nous affiche la page (booking/show.html.twig) #}
-        <a href="{{path("booking_show",{"id":booking.id} )}}" class="btn btn-info">
+        <a href="{{path("booking_show",{"slug":booking.slug} )}}" class="btn btn-info">
         Plus d'information
         </a>
             </div>

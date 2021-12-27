@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta name"viewport" content="width=devise-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+{# Les assets de symfony
+https://symfony.com/doc/current/templates.html#linking-to-css-javascript-and-image-assets
+ #}
+{# lien pour les icons #}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+        <title>SymBNB - {% block title %}}Connexion a l'administration{% endblock %}</title>
+       
+        {% block stylesheets %} {% endblock %}
+{# j'ai du installer les asset de symfony via "composer require symfony/asset" et vider mes caches afin d'utiliser l'expression "asset" pour cibler mes fichiers "css/js/img" #}
+<link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet"/>
+<link href="{{ asset('/css/app.css') }}" rel="stylesheet"/>
+
+<style>
+    body{
+        display:flex;
+        justify-content:center;
+        height:100vh;
+    }
+    .card{
+        margin-top:10%;
+    }
+</style>
+
+</head>
+<body>
+{% block body %}
+<div class="col-md-4 mt-4">
+<div class="card bg-light">
+    <div class="card-header">
+        <h4 class="card-title">
+            <i class="fa fa-lock"></i>
+            Connexion a l'administration
+        </h4>
+    </div>
+    <div class="card-body">
+        
+
+<form method="post">
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+    <div class="form-group">
+    <label for="inputEmail">Email</label>
+    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+    </div>
+    <div class="form-group">
+    <label for="inputPassword">Password</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+    </div>
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
+
+    {#
+        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+        See https://symfony.com/doc/current/security/remember_me.html
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+            </label>
+        </div>
+    #}
+    <div class="form-group">
+    <button class="btn btn-lg btn-primary" type="submit">
+    <i class="fa fa-lock-open"></i>
+        Connexion !
+    </button>
+    <a href="{{ path('homepage') }}" class="btn btn-link">
+    <i class="fa fa-arrow-circle-left"></i>
+    Retour au site
+    </a>
+    </div>
+</form>
+</div>
+</div>
+</div>
+
+{% endblock %}
+</body>
+</html>

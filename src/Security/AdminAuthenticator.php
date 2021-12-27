@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security;
+namespace App\Security; 
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,11 +20,11 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class LoginAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
+class AdminAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
+    public const LOGIN_ROUTE = 'admin_account_login';
 
     private $entityManager;
     private $urlGenerator;
@@ -95,9 +95,9 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
             return new RedirectResponse($targetPath);
         }
 
-        //redirection apres connexion validée 
-       return new RedirectResponse($this->urlGenerator->generate('homepage'));
-        // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+         //redirection apres connexion validée 
+       return new RedirectResponse($this->urlGenerator->generate('admin_ads_index'));
+        //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     protected function getLoginUrl()

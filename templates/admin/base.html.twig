@@ -21,8 +21,8 @@ https://symfony.com/doc/current/templates.html#linking-to-css-javascript-and-ima
 </head>
 <body>
 
-{# pour inclure un fichier de l'entete #}
-{% include 'partials/header.html.twig' %}
+{# pour inclure un fichier de l'entete du dossier "admin" #}
+{% include '/admin/partials/header.html.twig' %}
 
 
 {% block header %} {% endblock %}
@@ -38,8 +38,8 @@ https://symfony.com/doc/current/templates.html#linking-to-css-javascript-and-ima
         {% block javascripts %} {% endblock %}
     </body>
     
-  {# pour inclure un fichier du pieds de page #}      
-{% include 'partials/footer.html.twig' %}
+  {# pour inclure un fichier du pieds de page du dossier "admin" #}      
+{% include '/admin/partials/footer.html.twig' %}
 </html>
 
 

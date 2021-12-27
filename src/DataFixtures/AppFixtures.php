@@ -101,12 +101,12 @@ class AppFixtures extends Fixture
                 $introduction=$faker->paragraph(2);
                 $content= '<p>'.join('<p></p>',$faker->paragraphs(3)).'</p>' ;
 
-//_________________Pour chaque annnces on va selectinner un autheur au hazar_______________pour 30 annonces il est probables qu'on est plusieus annonces crées par un utilisateur
+                //------------------Pour chaque annnces on va selectinner un autheur au hazar------------------pour 30 annonces il est probables qu'on est plusieus annonces crées par un utilisateur
                 
-//____________chopper / Piochons un des utilisateur parmis les 5 crées plus haut_____________
+                //------------------chopper / Piochons un des utilisateur parmis les 5 crées plus haut_____________
         $user=$users[mt_rand(0, count($users)-1)]; 
 
-//_______________________________Affecter les infos des annonces_____________________
+                //_______________________________Affecter les infos des annonces_____________________
 
                     // methode slugify qui prend en parametre la variable $title (text alt des image separer par des tirets)
                     //  $slug=$slugify->slugify($title); (voir Ad.php Ligne 63)
@@ -151,15 +151,22 @@ class AppFixtures extends Fixture
                         $booker=$users[mt_rand(0, count($users)-1)];
 
                 // ________________________Affecter les infos des Reservations_____________
-                // commentaires
+
+                # commentaires
                 $comment=$faker->paragraph();
+
+                #Gestion du slug de la reservation (ajouter par moi meme afin de ne pas utiliser l'id de la reservaton en paramettre de l'url pour plus de securité)
+                $fakeId=$faker->creditCardNumber;
+                #----------------
                 $booking->setBooker($booker)
                         ->setAd($ad)
                         ->setStartDate($startDate)
                         ->setEndDate($endtDate)
                         ->setCreatedAt($createdAt)
                         ->setAmount($amount)
-                        ->setComment($comment);
+                        ->setComment($comment)
+                        # Affecter le slug du booking
+                        ->setSlug($fakeId);
                 // enregistrer la reservation
                 $manager->persist($booking);
 

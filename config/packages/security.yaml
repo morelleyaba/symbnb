@@ -12,16 +12,35 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
+                #la proprieté qui sert de connection
                 property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+            
+        #creeons un firewall "admin" entre "dev" et "main"
+        # le 'pattern'=>tous ce qui arrive sur tel url (dans notre cas l'url debutant par 'admin') fais partie du firewall 'admin'
+        # 'anonymous'=> (tous les non connectés)les anonymes peuvent avoir access aux firewall 'admin' c-t-d peuvent acceder aux url debutant par 'admin/' (ex:'/admin/login')
+       
+        admin:
+            pattern: ^/admin
+            anonymous: true
+
+            guard:
+                authenticators:
+                    - App\Security\AdminAuthenticator
+            logout:
+                # Le chemin qui permet de se deconnecté voir (securityAdminController.php)
+                path: admin_account_logout
+                # Ou se rediriger apres s'etre deconnecté
+                target: homepage            
         main:
             anonymous: true
             guard:
                 authenticators:
                     - App\Security\LoginAuthenticator
+               
             logout:
                 path: app_logout
                 # Ou se rediriger apres s'etre deconnecté
@@ -36,5 +55,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+    # Composant security de symfony, tous ce qui debute par "/admin" suivi de "login" est accessible a tous les utilisateurs (meme aux personnes non connectés),"IS_AUTHENTICATED_ANONYMOUSLY" un role qui pre-existe , voir (documentation des composants security symfony)
+         - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    # decommenter la premiere ligne, tous ce qui debute par "/admin" neccessite le role admin (securité)
+         - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

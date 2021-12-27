@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Ad;
+use Faker\Factory;
 use App\Entity\Booking;
 use App\Entity\Comment;
 use App\Form\BookingType;
 use App\Form\CommentType;
+use Cocur\Slugify\Slugify;
 use App\Repository\AdRepository;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,18 +38,27 @@ class BookingController extends AbstractController
             $em=$this->getDoctrine()->getManager();
             $formBook=$this->createForm(BookingType::class,$booking);
             $formBook->handleRequest($request);
-
+                
             if ($formBook->isSubmitted() && $formBook->isValid()) {
                     // recuperer l'utilisateur connecté,celui qui fait la reservation
                     $user=$this->getUser();
                     // _____________________________affecter les differentes valeurs a l'objet de la reservation
-                    $booking->setBooker($user)
+                    
+                    #Gestion du slug de la reservation (ajouter par moi meme afin de ne pas utiliser l'id de la reservaton en paramettre de l'url pour plus de securité)
+                    $faker=Factory::create('fr-Fr');
+                    $fakeId=$faker->creditCardNumber;
+                    #----------------
+                    
+                    $booking->setBooker($user) 
                             ->setAd($ad)
                             // ->setStartDate($booking->getStartDate())
                             // ->setEndDate($booking->getEndDate())
                             // ->setCreatedAt() allez voir dans l'entity "booking.php" vu que la date de creation doit s'incrementer automatiquement
                             // ->setAmount("")pareil pour le prix du sejour
-                            ->setComment($booking->getComment());
+                           //   getComment() pour recuperer le commentaire actuel venant du formulaire
+                            ->setComment($booking->getComment())
+                            # Affecter le slug du booking
+                            ->setSlug($fakeId);
                 // ______________________________________Avant de persister l'annonce____
 
                         #si les date ne sont pas disponibles, message d'erreur a l'utilisateur
@@ -55,16 +66,16 @@ class BookingController extends AbstractController
                                 $this->addFlash(
                                         "warning",
                                         "les dates que vous avez choisis ont deja été reservé pour cette annonce"
-                                );
+                                ); 
                         }#sinon
                         else {
                                 
                                 $em->persist($booking);
                                 $em->flush();
-                                // passer "l'id" de la reservation par l'url de la page de redirection "booking_show"
-                                // passer "l'id" de la reservation par l'url de la page de redirection "booking_show"
+                                // passer "le slug" de la reservation par l'url de la page de redirection "booking_show"
+                                // passer "le slug" de la reservation par l'url de la page de redirection "booking_show"
                                         return $this->redirectToRoute("booking_show",[
-                                                "id"=>$booking->getId(),
+                                                "slug"=>$booking->getSlug(),
                                                 "withAlert"=>true
                                         ]);
                         
@@ -81,7 +92,7 @@ class BookingController extends AbstractController
 
         /**
          * On ne commente pas la reservation, c'est l'annonce qu'on commente
-         *@Route("/booking/{id}", name="booking_show")
+         *@Route("/booking/{slug}", name="booking_show")
          * @param Booking $booking
          * @param Request $request
          * @return Response

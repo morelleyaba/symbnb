@@ -19,8 +19,8 @@ div.carousel-caption{
 }
 
 .avatar{
-    max-width:  128 px;
-    max-height: 128 px;
+    max-width:  10 px;
+    max-height: 10 px;
     border-radius: 50%;
 }
 
@@ -29,13 +29,20 @@ div.carousel-caption{
     max-height: 64 px;
     border-radius: 50%;
 }
+/* les images des author d'annonce dans la partie administration et de la barre de navigation */
+.avatar-micro{
+    max-width: 30px;
+    max-height: 30px;
+}
 
+
+/* Ajouter du style sur les journée impossible a choisir  */
 .datepicker table tr td.disabled, .datepicker table tr td.disabled:hover{
     background-color: #DDD !important;
     padding: 1px;
     color:firebrick !important;
 }
-
+/* les notes */
 span.rating i{
     color: goldenrod;
 }
@@ -43,3 +50,4 @@ span.rating i{
 a{
     text-decoration: none;
 }
+

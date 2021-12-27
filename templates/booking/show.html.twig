@@ -19,11 +19,11 @@
         <p>
         Votre réservation aupres de
         <strong>
-            <a href="{{path("user_show",{"slug":author.slug})}}" style="text-decoration: none;">{{author.fullName}}</a>
+            <a href="{{path("user_show",{"slug":author.slug})}}">{{author.fullName}}</a>
         </strong>
         pour l'annonce
         <strong>
-            <a href="{{path("ads_show",{"slug":ad.slug})}}" style="text-decoration: none;">{{ad.title}}</a>
+            <a href="{{path("ads_show",{"slug":ad.slug})}}">{{ad.title}}</a>
         </strong>
         a bien été prise en compte
         </p>
@@ -66,14 +66,14 @@
                     <h5>
                     {# passer le slug de l'autheur de l'annonce a l'url et afficher le profile de l'auteur de l'annonce / 
                     cette url a ete crée deja dans le "UserController" #}
-                    <a href="{{path('user_show',{'slug':author.slug})}}"style="text-decoration: none;">{{author.fullName}} </a>
+                    <a href="{{path('user_show',{'slug':author.slug})}}">{{author.fullName}} </a>
                     </h5>
                     {# afficher le nbre d'annonces #}
                     <spam class="badge badge-primary">{{author.ads| length}} Annonces</spam>
                 </div>
             </div>
             {{author.description| raw}}
-            <a href="{{path('user_show',{'slug':author.slug})}}"style="text-decoration: none;" class="btn btn-primary">Plus d'infos sur {{author.fullName}} </a>
+            <a href="{{path('user_show',{'slug':author.slug})}}" class="btn btn-primary">Plus d'infos sur {{author.fullName}} </a>
         </div>
         {# ___________Formulaire du commentaire de reservation #}
 
@@ -110,7 +110,7 @@
         <div class="alert alert-light">
             <h3>Votre Hebergement</h3>
             <h5>
-            <a href="{{path('ads_show',{'slug':ad.slug})}}"style="text-decoration: none;">
+            <a href="{{path('ads_show',{'slug':ad.slug})}}">
             {{ad.title}}
             </a>
             </h5>
@@ -119,7 +119,7 @@
             {{ad.content| raw}}
             {# passer le slug de l'appartement(annonce) reservé de l'annonce a l'url et afficher les infos de l'annonce/
              cette url a ete crée deja dans le "AdController" #}
-            <a href="{{path('ads_show',{'slug':ad.slug})}}"style="text-decoration: none;" class="btn btn-primary">Plus d'informations...</a>
+            <a href="{{path('ads_show',{'slug':ad.slug})}}" class="btn btn-primary">Plus d'informations...</a>
         </div>
     </div>
 </div>

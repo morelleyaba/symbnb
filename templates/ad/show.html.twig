@@ -120,15 +120,15 @@
                                     {# <img src="{{a.picture}}" alt="Avatar de {{a.firstname}} {{a.lastname}}" style=""> #}
 
                                     {# creeons une fonction ["getFullName() dans l'entity user"] pour  simplifier l'ecriiture du [a.firstname && a.lastname] #}
-                                    <a href="{{url}}" style="text-decoration: none;">
-                                    <img src="{{a.picture}}" class="avatar avatar-medium" alt="Avatar de {{a.fullName}}" style="max-width:  64 px;max-height: 64 px; border-radius: 50%;">
+                                    <a href="{{url}}">
+                                    <img src="{{a.picture}}" class="avatar avatar-medium" alt="Avatar de {{a.fullName}}">
                                     </a>
                                 </div>
 
                                 <div class="col-md"> 
                                     {# <h3>{{ad.author.firstname}} {{ad.author.lastname}}</h3> #}
                                     {# <h3>{{a.firstname}} {{a.lastname}}</h3> #}
-                                    <a href="{{url}}" style="text-decoration: none;">
+                                    <a href="{{url}}">
                                     <h3>{{a.fullName}}</h3>
                                     </a>
                                     <spam class="badge badge-primary bg-primary">{{a.ads|length}} Annonces</spam>

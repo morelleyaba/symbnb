@@ -1,0 +1,50 @@
+{# herite du fichier base.html.twig du dossier "admin" #}
+{% extends '/admin/base.html.twig' %}
+
+{% block title %}Administration des annonces{% endblock %}
+
+{% block body %} 
+
+<div class="container">
+    <h3>Gestion des annonces</h3></br>
+
+    <table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th class="text-center">Reservation</th>
+            <th class="text-center">Note</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody> 
+    {% for ad in ads %}
+        <tr>
+            <td>{{ad.id}}</td>
+            <td>{{ad.title}}</td>
+            {# nom de l'utilisateur qui a crée l'annonce #}
+            <td>
+                <img src="{{ad.author.picture}}" alt="" class="avatar avatar-micro mr-2">
+                {{ad.author.fullName}}
+            </td>
+            <td class="text-center">
+                <spam class="">{{ad.bookings| length}}</spam>
+            </td>
+            {# la moyenne des notes / Calculé dans l'entity Ad.php, on voudrait un chiffre apres la virgule,une virgule ensuite et un espace pour terminer a l'aide du filtre "number_format"  #}
+            <td class="text-center">
+                <spam class="">{{ad.avgRatings| number_format(1,',',' ')}}</spam>
+            </td>
+            <td>
+                <a href="#" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                <a href="#" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+</div>
+{% endblock %}

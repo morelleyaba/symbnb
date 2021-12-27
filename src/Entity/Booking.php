@@ -65,6 +65,11 @@ class Booking
      */
     private $comment;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
     // ____________________Gestion de La date de creation de l'annonce et le prix du sejour______
     /**
      * Callback appelé a chaque fois qu'on crée une reservation
@@ -129,7 +134,7 @@ class Booking
      * 
      * @return array
      */
-    public function getDays(){
+    public function getDays(){ 
         
         # Pour la reservation faites pour cette annonce(appartement)
         
@@ -236,6 +241,18 @@ class Booking
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

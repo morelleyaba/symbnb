@@ -17,6 +17,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdController extends AbstractController
 {
+    // _______________________________Afficher les annonces venant de la table
+    
     /**
      * Afficher les annonces venant de la table---------------------------------
      * @Route("/ads", name="ads_index")

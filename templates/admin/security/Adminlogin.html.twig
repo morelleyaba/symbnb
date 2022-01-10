@@ -44,14 +44,15 @@ https://symfony.com/doc/current/templates.html#linking-to-css-javascript-and-ima
         
 
 <form method="post">
-
+    {# si 'error' existe afficher un message d'erreur #}
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {# <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div> #}
+        <div class="alert alert-danger">Nom utilisateur ou mot de pass Invalid</div>
     {% endif %}
 
     {% if app.user %}
         <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+            Vous etes connectez en temps que  {{ app.user.username }}, <a href="{{ path('admin_account_logout') }}">Deconnexion</a>
         </div>
     {% endif %}
     <div class="form-group">

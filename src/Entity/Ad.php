@@ -75,7 +75,7 @@ class Ad
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ads")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $author;
+    private $author; 
 
     /**
      * ajouter 'cascadeleRemove' vu que j'arrivais pas a le suprimer

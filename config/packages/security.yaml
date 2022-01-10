@@ -21,7 +21,7 @@ security:
             
         #creeons un firewall "admin" entre "dev" et "main"
         # le 'pattern'=>tous ce qui arrive sur tel url (dans notre cas l'url debutant par 'admin') fais partie du firewall 'admin'
-        # 'anonymous'=> (tous les non connectés)les anonymes peuvent avoir access aux firewall 'admin' c-t-d peuvent acceder aux url debutant par 'admin/' (ex:'/admin/login')
+        # 'anonymous'=> (tous les nons-connectés)les anonymes peuvent avoir access aux firewall 'admin' c-t-d peuvent acceder aux url debutant par 'admin/' (ex:'/admin/login')
        
         admin:
             pattern: ^/admin

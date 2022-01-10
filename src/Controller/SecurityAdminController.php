@@ -15,6 +15,7 @@ class SecurityAdminController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        // redirection apres connexion validée ou aller voir le fichier (" Security\LoginAuthenticator.php ")
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path'); 
         // }

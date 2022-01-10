@@ -54,8 +54,8 @@ class AdType extends ApplicationType
                 )
 
                 //Ajouter un nouveau champ (image) au formulaire de type CollectionType qui nous permet de mettre en place le sous-formulaire
-// elements venant d'un autre entity (ImageType.php)
-// En realité, pour les entrés 'entry_type' le type sera rien d'autres que l'entity d'ou provient les infos du formulaire (ImageType) que nous voulons associer a ce formulaire
+                // elements venant d'un autre entity (ImageType.php)
+                // En realité, pour les entrés 'entry_type' le type sera rien d'autres que l'entity d'ou provient les infos du formulaire (ImageType) que nous voulons associer a ce formulaire
             ->add('images',CollectionType::class,[
                 'entry_type'=>ImageType::class,
                 'allow_add'=>true,

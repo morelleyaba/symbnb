@@ -1,0 +1,159 @@
+{# herite du fichier base.html.twig du dossier "admin" #}
+{% extends '/admin/base.html.twig' %}
+
+{% block title %}
+Edition de l'annonce N {{ad.id}}
+{% endblock %}
+{% form_theme formEdit _self %}
+
+{% block body %}
+<div class="container">
+    <h2 class="my-5">Edition l'Annonce : {{ad.title}} </h2>
+
+    {{form_start(formEdit)}}
+    <div class="row">
+        <div class="col">
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h4 class="card-title">Corriger l'annonce ?</h4>
+                </div>
+                <div class="card-body">
+                {{ form_widget(formEdit) }}
+                <button type="submit" class="btn btn-primary mt-4">
+                <i class="fa fa-check"></i>
+                Enregistrer les modifications
+                </button>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h4 class="card-title">Les reservtions</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Voyageur</th>
+                                <th>Date de reservation</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for booking in ad.bookings %}
+                            <tr>
+                                <td>{{booking.id}} </td>
+                                {# l'auteur de la reservation,de la proprieté "bookings" de l'entity "Ad" [La variable "ad" venant du controleur est
+                                issu du paramConveter de "Ad" donc pour parler de ce qui concerne les reservations on part de cete proprieté la],on a acces au "booker" de l'entity "booking" 
+                                par la suite "le name" du "user" / En un mot comment avoir access a l'auteur de la reservation en passant par la reservation[booking] qui est lié a "user" par "booker_id"[proprieté "booker"] a partir de l'entity "Ad"#}
+                                <td>{{booking.booker.fullName}} </td>
+                                <td>{{booking.createdAt | date('d/m/Y H:i')}} </td>
+                                <td> 
+                                <a href="" class="btn btn-primary">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card bg-light mt-5">
+                <div class="card-header">
+                    <h4 class="card-title">Les commentaires</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Voyageur</th>
+                                <th>Note</th>
+                                <th>Commentaires</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for comment in ad.comments %}
+                            <tr>
+                                <td>{{comment.id}} </td>
+                                {# l'auteur de commentaire,de la proprieté "comments" de l'entity "Ad" [La variable "ad" venant du controleur est
+                                issu du paramConveter de "Ad" donc pour parler de ce qui concerne les commentaires on part de cete proprieté la],on a acces au "author" de l'entity "comments" 
+                                par la suite "le name" du "user" / En un mot comment avoir access a l'auteur de la commentaires en passant par l commentaire[comment] qui est lié a "user" par "author_id"[proprieté "author"] a partir de l'entity "Ad"#}
+                                <td>{{comment.author.fullName}} </td>
+                                <td>{{comment.rating}} </td>
+                                <td>{{comment.content}} </td>
+                                <td> 
+                                <a href="" class="btn btn-primary">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    {{ form_end(formEdit)}}
+
+<div>
+{% endblock %}
+{# theme de formulaire _____________D14-V10 #}
+{% block _ad_images_widget %}
+        {{ form_widget(form) }}
+{% endblock %}
+
+{% block _ad_images_entry_row %}
+{# <div id="bock_{{id}}"> #}
+{{ form_widget(form) }}
+{# <div> #}
+{% endblock %}
+
+{# a chaque fois qu'on tombe sur la div de l'image, symfony va appeler ce theme defini uniquement pour
+ champ image de l'entity image ajouter dans le fichier AdType.php #}
+{% block _ad_images_entry_widget %}
+<div class="row align-items-center" id="block_{{id}}">
+    <div class="col-4">
+        {% if value %}
+            {# {{ dump(value.url) }} ______________A revoir, le formulaire d'edition s'enregistre avec une valeur de l'url = 0 quand j'utilise le src/image, mais xa marche quand quand j'utilise "form_row(form.url)"____#}
+            {{ form_row(form.url) }}
+            {# <img src="{{value.url}}" alt="" class="img-fluid"> #}
+        {% endif %}
+    </div>
+    <div class="col-6">
+
+        {{ form_row(form.caption) }}
+    </div>
+    <div class="col-2">
+        <button type="button" class="btn btn-danger" data-action="delete" data-target="#block_{{id}} ">
+        <i class="fa fa-trash"></i>
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+        $(document).ready(function(){
+            //xa va nous donner tous les bouttons qui ont un attribut (data-action = delete)
+            $('[data-action="delete"]').click(function(){
+                // this qui est lié a un évenement fait reference a l'element qui a declenché l'evenement 
+                // dans notre cas (le boutton sur lequel on a clicker)
+                // dataset fait reference a tous ses attributs (data-quelqueChose) 
+                //et ensuite (.target) parceque on veux acceder a l'attribut (data-target Ligne 72)
+                const target=this.dataset.target;
+                //Quand on click sur le boutton qu'il nous suprime la div dont l'id = (block_id)
+                $(target).remove();
+                //console.log(target);
+
+            });
+        });
+
+</script>
+{% endblock %}

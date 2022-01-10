@@ -38,8 +38,9 @@
                 <spam class="">{{ad.avgRatings| number_format(1,',',' ')}}</spam>
             </td>
             <td>
-                <a href="#" class="btn btn-primary"><i class="fa fa-edit"></i></a>
-                <a href="#" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                {# envoyer le slug par l'url pour editer l'article  #}
+                <a href="{{ path('admin_ads_edit',{'slug':ad.slug}) }}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                <a href="{{ path('admin_ads_delete',{'slug':ad.slug}) }}" class="btn btn-danger" onclick="return confirm(`Etes vous sur de vouloir suprimer l'annonce {{ad.title}} ?`)"><i class="fa fa-trash"></i></a> 
             </td>
         </tr>
     {% endfor %}

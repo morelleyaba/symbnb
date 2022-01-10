@@ -118,6 +118,7 @@ class AdController extends AbstractController
     }
 
     //-------------------------------- Edition d'une annnonce ------------------------
+    
     // editer une annonce on peux utiliser le paraConverter comme utiliser le repository, dans notre cas on va utiliser le repository
     /**
      *  Afficher le formulaire d'edition
@@ -164,7 +165,7 @@ class AdController extends AbstractController
             //Envoyer le $ad qui contient les données de l'entity de l'annonce concerné
             'ad'=>$ad
         ]);
-    }
+    } 
 
     // ____________________Suprimer une annonce______n'a pas marché , a revoir________
 

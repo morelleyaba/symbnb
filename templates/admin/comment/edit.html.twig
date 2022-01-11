@@ -1,0 +1,37 @@
+{# herite du fichier base.html.twig du dossier "admin" #}
+{% extends '/admin/base.html.twig' %}
+
+{% block title %}
+Edition de le commentaire {{comment.id}}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h3 class="my-5">Edition du commentaire : {{comment.id}} </h3>
+    
+<div class="alert alert-info">
+    <strong>Annonce liée : </strong>{{comment.ad.title}}<br>
+    <strong>Auteur: </strong>{{comment.author.fullName}}<br>
+    <strong>Date de creation: </strong>{{comment.createdAt| date("d/m/Y H:i")}}<br>
+    <strong>Note donnée : </strong>{{comment.rating}}
+</div>
+
+    {{form_start(formComment)}}
+    <div class="row">
+        <div class="col">
+            <div class="card bg-light">
+                <div class="card-body">
+                {{ form_widget(formComment) }}
+                <button type="submit" class="btn btn-primary mt-4">
+                <i class="fa fa-check"></i>
+                Enregistrer les modifications
+                </button>
+                </div>
+            </div>
+        </div>
+        
+    <div>
+    {{ form_end(formComment)}}
+
+<div>
+{% endblock %}

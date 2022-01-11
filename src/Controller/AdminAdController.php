@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
-class AdminAdController extends AbstractController
+class AdminAdController extends AbstractController 
 {
     // _______________________________________Afficher toutes les annonces chez l'admin__D14-V5__
     /**
@@ -63,7 +63,7 @@ class AdminAdController extends AbstractController
         ]);
     }
 
-    // ____________supprimer une annonce
+    // ____________supprimer une annonce par l'admin
 
     /**
      * suprimier une annonce par l'admin

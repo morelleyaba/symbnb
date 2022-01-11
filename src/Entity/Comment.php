@@ -23,7 +23,7 @@ class Comment
     /**
      * @ORM\Column(type="datetime")
      */
-    private $createdAt;
+    private $createdAt; 
 
     /**
      * @ORM\Column(type="integer")

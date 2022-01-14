@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition de la reservation N :{{booking.id}} {% endblock %}
+
+{% block stylesheets %}
+
+{# cdn css calendrier javascript personnalisé #}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"/>
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+        <h3>Modifier la reservation N : {{booking.id}} </h3>
+
+        {{form_start(formBook)}}
+            <div class="alert alert-light">
+            <div class="row">
+                <div class="col">
+                    {{form_row(formBook.startDate)}}
+                    {{form_row(formBook.endDate)}}
+                    {{form_row(formBook.comment)}}
+                </div>
+                <div class="col">
+                    {{form_row(formBook.booker)}}
+                    {{form_row(formBook.ad)}}
+                </div>
+                {# <spam id="days">0</spam>nuit(s) a {{booking.ad.price}} &euro;/ Nuit #}
+                    <button type="submit" class="btn btn-success mt-4"><i class="fas fa-check"></i>
+                   Enregistrer les modifications</button>
+            </div>
+        {{form_end(formBook)}}
+</div>
+{% endblock %}
+
+
+

@@ -38,14 +38,15 @@ class Booking
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="Attention ! la date d'arrivée doit etre au bon format")
-     * @Assert\GreaterThan("today", message="La date d'arrivée doit etre ulterieur a la date d'aujourdh'huit !")
+     * les validation-group [dans notre cas (groups={"front"})] sont fait pour lever les exeptions lors de la validation de certains formulaires,cela se passe couramment quand on a deux formulaires differents liés a une meme entity [dans notre cas Booking] et que les contraintes d'un formulaire ne sont pas neccessairement les contraintes de l'autre formulaire. (voir les deux controller de booking) 
+     * @Assert\GreaterThan("today", message="La date d'arrivée doit etre ulterieur a la date d'aujourdh'huit !",groups={"front"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="Attention ! la date de depart doit etre au bon format")
-     * la proprieté "propertyPath" fais intervenir un autre champ qui va servir de comparaison (de superiorité grace a "GreaterThan")
+     * la proprieté "propertyPath" fais intervenir un autre champ (dans notre cas "startDate") qui va servir de comparaison (de superiorité grace a "GreaterThan")
      * @Assert\GreaterThan(propertyPath="startDate",message="La date de depart ne peut etre anterieure a la date d'arrivée !")
      */
     private $endDate;
@@ -72,7 +73,7 @@ class Booking
 
     // ____________________Gestion de La date de creation de l'annonce et le prix du sejour______
     /**
-     * Callback appelé a chaque fois qu'on crée une reservation
+     * Callback appelé a chaque fois qu'on crée une reservation (creer un objet avec '@ORM\PrePersist',si on veut que xa s'applique aussi quand on edite[mettre a jour] en plus de '@ORM\PrePersist' ,alors on ajoute  le '@ORM\PreUpdate' )
      * @ORM\PrePersist
      *
      * @return void
@@ -88,6 +89,7 @@ class Booking
             if(empty($this->amount)){
                 // multiplier le prix de l'annonce par le nombre de jours du sejour 
                 $prix=$this->ad->getPrice()*$this->getDuration();
+                // attribuer le $prix a la proprieté "amount" de l'entity "Booking"
                 $this->amount=$prix;
             }
     }
@@ -95,7 +97,8 @@ class Booking
     //______________________ a l'aide de la fonction "diff" determinons le nbre de jour entre la date de fin et celle du debut
     
     public function getDuration() {
-       
+    //    ici on a pas de callack, donc xa s'execute a chaque fois qu'un formulaire est validé, qu'importe 'prePersist ou preUpdate
+    
             $dureeSejour=$this->endDate->diff($this->startDate);
             return $dureeSejour->days;
     }
@@ -161,7 +164,7 @@ class Booking
         return $this->id;
     }
 
-    public function getBooker(): ?User
+    public function getBooker(): ?User 
     {
         return $this->booker;
     }

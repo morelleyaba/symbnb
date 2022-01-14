@@ -50,7 +50,7 @@ class AdminCommentController extends AbstractController
                 "Le commentaire N <strong>{$comment->getId()}</strong> a bien été modifié"
             );
 
-            // return $this->redirectToRoute("admin_comments_index");
+            return $this->redirectToRoute("admin_comments_index");
         }
         return $this->render('admin/comment/edit.html.twig',[
              'formComment'=>$form->createView(),

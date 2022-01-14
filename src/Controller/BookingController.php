@@ -36,7 +36,12 @@ class BookingController extends AbstractController
             $booking= new Booking;
 
             $em=$this->getDoctrine()->getManager();
-            $formBook=$this->createForm(BookingType::class,$booking);
+            $formBook=$this->createForm(BookingType::class,$booking,[
+                //     Voir Booking.php L-49 && AdminBookingController.php L-39
+                // Je veux qu'en validant la reservation, les options des validations-groups sont prises en comptes (le group par defaut "Default" c'est a dire tous ce qui n'est pas lié a un group et le group "front" que j'ai creer moi mm)
+                // On peut egalement ne pas le mettre ici pour garder notre controller propre et aller le mettre "BookingType.php L-54"
+                "validation_groups"=>["Default","front"]
+            ]);
             $formBook->handleRequest($request);
                 
             if ($formBook->isSubmitted() && $formBook->isValid()) {
@@ -49,7 +54,7 @@ class BookingController extends AbstractController
                     $fakeId=$faker->creditCardNumber;
                     #----------------
                     
-                    $booking->setBooker($user) 
+                    $booking->setBooker($user)   
                             ->setAd($ad)
                             // ->setStartDate($booking->getStartDate())
                             // ->setEndDate($booking->getEndDate())

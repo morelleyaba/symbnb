@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminBookingController extends AbstractController
 {
-    // _________________________Affichage des commentaires________
+    // _________________________Affichage des Reservations________
     /**
      * @Route("/admin/bookings", name="admin_bookings_index")
      */
@@ -23,7 +23,7 @@ class AdminBookingController extends AbstractController
         ]);
     }
 
-    // _____________edition d'un Commentaire par l'admin_________D14-V15 (explication des trois methodes d'edition)
+    // _____________edition d'une Reservations par l'admin_________D14-V15 (explication des trois methodes d'edition)
     
     /**
      * editer un commentaire
@@ -69,7 +69,7 @@ class AdminBookingController extends AbstractController
         ]);
     }
 
-    // ____________supprimer un commentaire par l'admin
+    // ____________supprimer une Reservations par l'admin
 
     /**
      * suprimer une annonce par l'admin

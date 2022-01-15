@@ -24,7 +24,7 @@ security:
         # 'anonymous'=> (tous les nons-connectés)les anonymes peuvent avoir access aux firewall 'admin' c-t-d peuvent acceder aux url debutant par 'admin/' (ex:'/admin/login')
        
         admin:
-            pattern: ^/admin
+            pattern: ^/admin 
             anonymous: true
 
             guard:
@@ -57,6 +57,6 @@ security:
     access_control:
     # Composant security de symfony, tous ce qui debute par "/admin" suivi de "login" est accessible a tous les utilisateurs (meme aux personnes non connectés),"IS_AUTHENTICATED_ANONYMOUSLY" un role qui pre-existe , voir (documentation des composants security symfony)
          - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    # decommenter la premiere ligne, tous ce qui debute par "/admin" neccessite le role admin (securité)
+    # decommenter la premiere ligne, tous les urls qui debutent par "/admin" neccessite le role admin (securité)
          - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

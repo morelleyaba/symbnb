@@ -32,7 +32,7 @@ class SecurityAdminController extends AbstractController
      * permet aux administrateurs de se deconnecter
      * la route doit debuter par 'admin'
      * pour la petite histoire a chaque fois que l'administrateur se deconnectait, on etait dirigé vers le formulaire des utilisateurs, ce qui n'est pas normale, il a fallu donc creer une nouvelle route de deconnexion pour l'admin
-     * @Route("/admin/logout", name="admin_account_logout")
+     * @Route("/admin/logout", name="admin_account_logout") 
      */
     public function logout(): void
     {

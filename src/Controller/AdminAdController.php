@@ -17,17 +17,34 @@ class AdminAdController extends AbstractController
     /**
      * Afficher toutes les annonces , 
      * l'espace admin doit etre accessible uniquement a l'administrateur (voir le fichier security.yaml / Avant derniere ligne)
-     *  @Route("/admin/ads", name="admin_ads_index")
+     * 
+     * systeme de pagination, l'url doit recevoir en parametre la variable 'page'
+     *  @Route("/admin/ads/{page<\d+>?1}", name="admin_ads_index")
      * 
      * faire en sorte que lorsque l'admin n'arrive pas a acceder aux pages qui  lui sont destiné,
      *  il soit redirigé vers sa page de connexion personnalisé et non la page de connexion des utilisateurs qui a été improvisé lorsque je creais le form-auth, voir(le fichier security.yaml)[les firewall]
      * @param AdRepository $ad
      * @return Response 
      */
-    public function index(AdRepository $adRepo): Response
+    public function index(AdRepository $adRepo, $page): Response
     {
+        // ________________________________systeme de pagination__D15-V2
+        $limit=3;
+        $start=$page * $limit - $limit;
+        // 1 * 10 = 10 - 10 = 0
+        // 2 * 10 = 20 - 10 = 10
+
+        // Rendre dynamique la pagination, determiner le nbre de page qu'on peut afficher en fonction du nbre d'annonces divisé par la limit
+        $total= count($adRepo->findAll());
+        $pages = ceil($total/$limit); # 3.4 => 4 [arrondie a 4 par la fonction "ceil()"]
+
+
+
         return $this->render('admin/ad/index.html.twig', [
-            'ads' => $adRepo->findAll(),
+            // 'ads' => $adRepo->findAll(), / a cause de la pagination utilisons plutot findBy()
+            'ads' => $adRepo->findBy([],[],$limit,$start),
+            'pages'=>$pages,
+            'page'=>$page,
         ]);
     }
 

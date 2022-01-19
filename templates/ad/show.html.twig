@@ -98,7 +98,7 @@
                                 {# inclure le fichier de rating #}
     {# ________________________ {% set rating = comment.rating %} / On peut faire autrement en passant la variable dans include avec "with ...." #}
                                 {% include 'partials/rating.html.twig' with {'rating':comment.rating} %}
-                            </div>
+                            </div> 
                     {% endfor %}
             {% else %}
                 <h4>Cette annonce n'a pas encore recu de commentaires</h4> 

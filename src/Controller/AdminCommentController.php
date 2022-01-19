@@ -12,14 +12,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminCommentController extends AbstractController
 {
-    // _________________________Affichage des commentaires________
+    // _________________________Affichage des commentaires__________D15-V6 => V11__Pas terminer
     /**
-     * @Route("/admin/comments", name="admin_comments_index")
+     * @Route("/admin/comments/{page<\d+>?1}", name="admin_comments_index")
      */
-    public function index(CommentRepository $commentRepo): Response
+    public function index(CommentRepository $commentRepo, $page): Response
     {
+            // ________________________________systeme de pagination__D15-V2
+            $limit=7;
+            $start=$page * $limit - $limit;
+            $total= count($commentRepo->findAll());
+            $pages = ceil($total/$limit);
+        
         return $this->render('admin/comment/index.html.twig', [
-            'comments' => $commentRepo->findAll(),
+            'comments' => $commentRepo->findBy([],[],$limit,$start),
+            'pages'=>$pages,
+            'page'=>$page,
         ]);
     }
 

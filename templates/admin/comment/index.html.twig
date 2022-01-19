@@ -52,5 +52,10 @@
     </tbody>
 </table>
 
+{# systeme de pagination______________D15-V4_____ #}
+{# Factorisation du code de pagination avec la variable 'route' qui va contenir les differents chemins______________D15-V7_____ #}
+
+{% include 'admin/partials/pagination.html.twig' with {'route':'admin_comments_index'}  %}
+
 </div>
 {% endblock %}

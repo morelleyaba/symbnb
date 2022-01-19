@@ -96,7 +96,7 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
         }
 
          //redirection apres connexion validée de l'admin
-       return new RedirectResponse($this->urlGenerator->generate('admin_ads_index'));
+       return new RedirectResponse($this->urlGenerator->generate('admin_dashboard'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 

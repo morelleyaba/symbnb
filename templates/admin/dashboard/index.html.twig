@@ -1,0 +1,68 @@
+{% extends '/admin/base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+{# ________________Decouverte du DQL__D16_ #}
+
+{% block body %}
+
+<div class="container-fluid mt-4"> 
+    <div class="row">
+        <div class="col">
+            <div class="card bg-primary text-white mb-3 text-center">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <i class="fa fa-users fa-3x"></i>
+                        </div>
+                        <div class="col-8">
+                            <h4 class="card-title">{{stats.users}} Utilisateurs</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-dark text-white mb-3 text-center">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <i class="fa fa-table fa-3x"></i>
+                        </div>
+                        <div class="col-8">
+                            <h4 class="card-title">{{stats.ads}} Annonces</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-warning text-white mb-3 text-center">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <i class="fa fa-folder fa-3x"></i>
+                        </div>
+                        <div class="col-8">
+                            <h4 class="card-title">{{stats.bookings}} Reservations</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        </div>
+        <div class="col">
+            <div class="card bg-success text-white mb-3 text-center">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <i class="fa fa-comments fa-3x"></i>
+                        </div>
+                        <div class="col-8">
+                            <h4 class="card-title">{{stats.comments}} Avis</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        </div>
+    </div>
+</div>
+{% endblock %}

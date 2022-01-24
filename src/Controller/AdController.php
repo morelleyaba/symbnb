@@ -95,7 +95,7 @@ class AdController extends AbstractController
     /**
      * repository qui permet de selectionner les donnée au sein d'une table
      * permet d'afficher une seule annonce
-     * on passe slug en paramettre (par l'url) voir fichier index.html.twig L-22
+     * on passe slug en paramettre (par l'url) voir fichier ad/index.html.twig L-22
      * @Route("ads/{slug}", name="ads_show")
      * 
      * @Entity("Ad", expr="AdRepository.find(Ad)")

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur{% endblock %}
+{% block body %}
+
+{# se referer a la doc pour personnaliser les erreur '500', D10-V4 pas encore fait , a condition de regler le soucis voter #}
+{# les erreur de type 500 'not Found' #}
+<div class="container">
+        <h2>Oups ! la page que vous recherchez n'existe pas</h2>
+        <p>Aucun soucis vous pouvez retourner a nos dernieres annonces ! </p>
+        <a href="{{ path('ads_index') }}" class="btn btn-success">Nos annonces</a>
+    </div>
+
+{% endblock %}

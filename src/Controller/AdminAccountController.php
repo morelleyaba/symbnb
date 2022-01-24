@@ -17,8 +17,6 @@ class AdminAccountController extends AbstractController
      */
     public function index(): Response 
     {
-        return $this->render('admin/account/login.html.twig', [
-            'controller_name' => 'AdminAccountController',
-        ]);
+        return $this->render('admin/account/login.html.twig');
     }
 }

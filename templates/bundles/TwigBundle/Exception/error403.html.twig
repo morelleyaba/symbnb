@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur{% endblock %}
+{% block body %}
+
+{# Gestion des erreur, allez dans le fichier ".env" puis L-17 'APP_ENV=dev' #}
+{# les erreur de type 403 'Forbidden' #}
+<div class="container">
+        <h2>Oups !</h2>
+        <div class="alert alert-danger">
+        <p>Vous n'avez pas le droit d'acceder a cette ressource ! </p>
+        </div>
+        <a href="{{ path('homepage') }}" class="btn btn-primary">Retour a l'acceuil</a>
+    </div>
+
+{% endblock %}

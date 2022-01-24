@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur{% endblock %}
+{% block body %}
+
+{# Gestion des erreur, allez dans le fichier ".env" puis L-17 'APP_ENV=dev' #}
+{# les erreur de type 404 'not Found' #}
+<div class="container">
+        <h2>Oups ! la page que vous recherchez n'existe pas</h2>
+        <p>Aucun soucis vous pouvez retourner a l'acceuil ou nos dernieres annonces ! </p>
+        <a href="{{ path('homepage') }}" class="btn btn-primary">Retour a l'acceuil</a>
+        <a href="{{ path('ads_index') }}" class="btn btn-success">Nos annonces</a>
+    </div>
+{# Pour eviter que l'ancienne message d'erreur reste intact meme en ayant modifier le contenu de l'affichage, veuillez supprimer le dossier 'prod' de 'translations/var/cache/'
+_________________D10-V4__  #}
+{% endblock %}

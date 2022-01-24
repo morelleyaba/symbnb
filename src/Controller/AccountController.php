@@ -73,7 +73,7 @@ class AccountController extends AbstractController
 
         //---------------------------ATTENTION------------------------
 
-        // on ne fera pas ($user = new user), ici on veux modifier et non creer,pas donc besoin de creer un nouvelle objet comme on l'a fait lorsqu'on voulait creer un nouelle enreistrement ou annonce
+        // on ne fera pas ($user = new user), ici on veux modifier et non creer,pas donc besoin de creer un nouvel objet comme on l'a fait lorsqu'on voulait creer un nouvelle enregistrement ou annonce
         // on va plutot recuperer dans la variable ("$user"), l'utilisateur qui est connecté, on l'obtient grace au ("$user=$this->getUser()")
             $user=$this->getUser();
 
@@ -178,7 +178,7 @@ class AccountController extends AbstractController
 
      public function booking(){
          
-        return $this->render('account/bookings.html.twig',
-    );
+        // pas besoin de passer des variables , servons nous de la variable "app" vu que l'utilisateur est connecté
+        return $this->render('account/bookings.html.twig');
      }
 }
